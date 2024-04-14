@@ -12,6 +12,8 @@ import java.util.ArrayList;
 public class UserDao {
     private final Connection con;
 
+
+
     public UserDao() {
         this.con = Db.getInstance();
     }

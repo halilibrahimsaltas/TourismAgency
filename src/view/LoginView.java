@@ -37,7 +37,7 @@ public class LoginView extends  Layout{
                 if(loginUser== null){
                     Helper.showMsg("notFound");
                 }else {
-                    //new AdminView(loginUser);
+                    new AdminView(loginUser);
                     dispose();
                 }
             }
