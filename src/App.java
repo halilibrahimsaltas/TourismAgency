@@ -11,8 +11,7 @@ public class App {
 
 
         UserManager userManager = new UserManager();
-        AdminView adminView = new AdminView(userManager.findByLogin("admin","1234"));
-
+        AdminView adminView = new AdminView(userManager.findByLogin("hasan","1234"));
 
 
     }

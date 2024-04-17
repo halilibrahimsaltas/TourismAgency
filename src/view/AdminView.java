@@ -57,6 +57,8 @@ public class AdminView extends Layout {
                 dispose();
             }
             case employee -> {
+                EmployeeView employeeView = new EmployeeView(this.user);
+                dispose();
 
             }
 
