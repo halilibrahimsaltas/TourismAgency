@@ -23,9 +23,9 @@ public class Room {
     private  boolean gameConsole;
     private boolean chest;
     private boolean projection;
-    private  boolean stock;
+    private  int stock;
 
-    public Room(int id, String type, int bedNumber, int size, boolean tv, boolean minibar, boolean gameConsole, boolean chest, boolean projection, boolean stock) {
+    public Room(int id, String type, int bedNumber, int size, boolean tv, boolean minibar, boolean gameConsole, boolean chest, boolean projection, int stock) {
         this.id = id;
         this.type = type;
         this.bedNumber = bedNumber;
@@ -137,11 +137,11 @@ public class Room {
         this.projection = projection;
     }
 
-    public boolean isStock() {
+    public int getStock() {
         return stock;
     }
 
-    public void setStock(boolean stock) {
+    public void setStock(int stock) {
         this.stock = stock;
     }
 }

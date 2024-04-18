@@ -74,7 +74,7 @@ public class HotelView extends  Layout{
 
 
         btn_save.addActionListener(e -> {
-            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name,this.fld_city,this.fld_district,this.fld_address,this.fld_mail,this.fld_phone,this.fld_star,this.fld_pension,})) {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name,this.fld_city,this.fld_district,this.fld_address,this.fld_mail,this.fld_phone,this.fld_star,this.fld_pension})) {
                 Helper.showMsg("fill");
             }else{
                 boolean result=false;
