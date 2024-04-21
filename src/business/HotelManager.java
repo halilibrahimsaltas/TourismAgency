@@ -42,6 +42,8 @@ public class HotelManager {
             rowObject[i++] = obj.isConcierge();
             rowObject[i++] = obj.isSpa();
             rowObject[i++] = obj.isService();
+            rowObject[i++] = obj.getAdultPrice();
+            rowObject[i++] = obj.getChildPrice();
             hotelObjList.add(rowObject);
         }
         return hotelObjList;
@@ -63,6 +65,7 @@ public class HotelManager {
         return  this.hotelDao.selectByQuery(query);
     }
     public  Hotel getById(int id) { return this.hotelDao.getById(id);}
+
 
     public  boolean delete(int id){
         if(this.getById(id)== null){

@@ -2,6 +2,7 @@ package dao;
 
 import core.Db;
 import entity.Hotel;
+import entity.Pension;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -41,7 +42,7 @@ public class HotelDao {
         hotel.setMail(rs.getString("hotel_mail"));
         hotel.setPhone(rs.getString("hotel_phone"));
         hotel.setStar(rs.getInt("hotel_star"));
-        hotel.setPension(rs.getString("hotel_pension_type"));
+        hotel.setPension(Pension.type.valueOf(rs.getString("hotel_pension_type")));
         hotel.setPark(rs.getBoolean("hotel_park"));
         hotel.setWifi(rs.getBoolean("hotel_wifi"));
         hotel.setPool(rs.getBoolean("hotel_pool"));
@@ -49,6 +50,8 @@ public class HotelDao {
         hotel.setConcierge(rs.getBoolean("hotel_concierge"));
         hotel.setSpa(rs.getBoolean("hotel_spa"));
         hotel.setService(rs.getBoolean("hotel_room_service"));
+        hotel.setAdultPrice(rs.getDouble("adult_price"));
+        hotel.setChildPrice(rs.getDouble("child_price"));
         return hotel;
     }
     public boolean update(Hotel hotel) {
@@ -67,7 +70,9 @@ public class HotelDao {
                 "hotel_fitness= ? ," +
                 "hotel_concierge= ? ," +
                 "hotel_spa= ? ," +
-                "hotel_room_service= ? " +
+                "hotel_room_service= ? ," +
+                "adult_price= ? ," +
+                "child_price= ? " +
                 " WHERE hotel_id = ?";
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
@@ -78,7 +83,7 @@ public class HotelDao {
             pr.setString(5, hotel.getMail());
             pr.setString(6, hotel.getPhone());
             pr.setInt(7, hotel.getStar());
-            pr.setString(8, hotel.getPension());
+            pr.setString(8, hotel.getPension().toString());
             pr.setBoolean(9, hotel.isPark());
             pr.setBoolean(10, hotel.isWifi());
             pr.setBoolean(11, hotel.isPool());
@@ -86,7 +91,9 @@ public class HotelDao {
             pr.setBoolean(13, hotel.isConcierge());
             pr.setBoolean(14, hotel.isSpa());
             pr.setBoolean(15, hotel.isService());
-            pr.setInt(16,hotel.getId());
+            pr.setDouble(16,hotel.getAdultPrice());
+            pr.setDouble(17,hotel.getAdultPrice());
+            pr.setInt(18,hotel.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException throwable) {
             throwable.printStackTrace();
@@ -130,7 +137,9 @@ public class HotelDao {
                 "hotel_fitness," +
                 "hotel_concierge," +
                 "hotel_spa," +
-                "hotel_room_service" +
+                "hotel_room_service," +
+                "adult_price," +
+                "child_price" +
                 ")" +
                 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
@@ -142,7 +151,7 @@ public class HotelDao {
             pr.setString(5, hotel.getMail());
             pr.setString(6, hotel.getPhone());
             pr.setInt(7, hotel.getStar());
-            pr.setString(8, hotel.getPension());
+            pr.setString(8, hotel.getPension().toString());
             pr.setBoolean(9, hotel.isPark());
             pr.setBoolean(10, hotel.isWifi());
             pr.setBoolean(11, hotel.isPool());
@@ -150,12 +159,16 @@ public class HotelDao {
             pr.setBoolean(13, hotel.isConcierge());
             pr.setBoolean(14, hotel.isSpa());
             pr.setBoolean(15, hotel.isService());
+            pr.setDouble(16,hotel.getAdultPrice());
+            pr.setDouble(17,hotel.getChildPrice());
             return pr.executeUpdate() != -1;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return true;
     }
+
+
     public boolean delete(int hotelId) {
         String query = "DELETE FROM public.\"hotel\" WHERE hotel_id = ?";
 

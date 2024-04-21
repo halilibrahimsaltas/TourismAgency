@@ -1,5 +1,7 @@
 package entity;
 
+import core.ComboItem;
+
 public class Room {
 
     private int id;
@@ -10,7 +12,7 @@ public class Room {
 
     private  int pensionId;
 
-    private String type;
+    private Room.type type;
 
     private  int bedNumber;
 
@@ -25,7 +27,7 @@ public class Room {
     private boolean projection;
     private  int stock;
 
-    public Room(int id, String type, int bedNumber, int size, boolean tv, boolean minibar, boolean gameConsole, boolean chest, boolean projection, int stock) {
+    public Room(int id, Room.type type, int bedNumber, int size, boolean tv, boolean minibar, boolean gameConsole, boolean chest, boolean projection, int stock) {
         this.id = id;
         this.type = type;
         this.bedNumber = bedNumber;
@@ -38,8 +40,18 @@ public class Room {
         this.stock = stock;
     }
 
+    public enum type{
+        SingleRoom,
+        DoubleRoom,
+        JuniorSuite,
+        Suite
+
+    }
+
     public Room() {
     }
+
+
 
     public int getId() {
         return id;
@@ -73,11 +85,11 @@ public class Room {
         this.pensionId = pensionId;
     }
 
-    public String getType() {
+    public Room.type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Room.type type) {
         this.type = type;
     }
 

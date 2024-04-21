@@ -32,6 +32,9 @@ public class EmployeeView extends Layout {
     private JPanel pnl_room;
     private JScrollPane scl_room;
     private JTable tbl_room;
+    private JTable tbl_pension;
+    private JPanel pnl_pension;
+    private JScrollPane scl_pension;
     private DefaultTableModel tmdl_hotel = new DefaultTableModel();
 
     private DefaultTableModel tmdl_season = new DefaultTableModel();
@@ -110,7 +113,7 @@ public class EmployeeView extends Layout {
     }
 
     public void loadHotelTable(ArrayList<Object[]> hotelList) {
-        col_hotel = new Object[]{"ID", "Name", "City", "District", "Address", "Mail", "Phone", "Star", "Pension", "Park", "WiFi", "Pool", "Fitness", "Concierge", "SPA", "RoomSer"};
+        col_hotel = new Object[]{"ID", "Name", "City", "District", "Address", "Mail", "Phone", "Star", "Pension", "Park", "WiFi", "Pool", "Fitness", "Concierge", "SPA", "RoomSer","Adult Price","Child Price"};
         if (hotelList == null) {
             hotelList = this.hotelManager.getForTable(this.col_hotel.length, this.hotelManager.findAll());
         }

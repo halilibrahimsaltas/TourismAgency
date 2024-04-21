@@ -1,5 +1,7 @@
 package entity;
 
+import core.ComboItem;
+
 public class Hotel {
     private int id;
     private String name;
@@ -16,7 +18,7 @@ public class Hotel {
 
     private int star;
 
-    private String pension;
+    private Pension.type pension;
 
     private boolean park;
 
@@ -30,7 +32,27 @@ public class Hotel {
     private boolean spa;
     private boolean service;
 
-    public Hotel(int id, String name, String city, String district, String address, String mail, String phone, int star, String pension, boolean park, boolean wifi, boolean pool, boolean fitness, boolean concierge, boolean spa, boolean service) {
+    private double adultPrice;
+
+    private double childPrice;
+
+    public double getAdultPrice() {
+        return adultPrice;
+    }
+
+    public void setAdultPrice(double adultPrice) {
+        this.adultPrice = adultPrice;
+    }
+
+    public double getChildPrice() {
+        return childPrice;
+    }
+
+    public void setChildPrice(double childPrice) {
+        this.childPrice = childPrice;
+    }
+
+    public Hotel(int id, String name, String city, String district, String address, String mail, String phone, int star, Pension.type pension, boolean park, boolean wifi, boolean pool, boolean fitness, boolean concierge, boolean spa, boolean service, double adultPrice, double childPrice) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -47,9 +69,16 @@ public class Hotel {
         this.concierge = concierge;
         this.spa = spa;
         this.service = service;
+        this.adultPrice=adultPrice;
+        this.childPrice=childPrice;
     }
 
     public Hotel() {
+    }
+
+
+    public ComboItem getComboItem() {
+        return new ComboItem(this.getId(),this.getName());
     }
 
     public int getId() {
@@ -116,11 +145,11 @@ public class Hotel {
         this.star = star;
     }
 
-    public String getPension() {
+    public Pension.type getPension() {
         return pension;
     }
 
-    public void setPension(String pension) {
+    public void setPension(Pension.type pension) {
         this.pension = pension;
     }
 

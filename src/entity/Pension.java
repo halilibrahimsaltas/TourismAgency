@@ -1,22 +1,37 @@
 package entity;
 
+import core.ComboItem;
+
 public class Pension {
 
     private int id;
 
-    private String type;
+    private Pension.type type;
 
     private int pensionHotelId;
 
-    private  int stock;
 
-    public Pension(int id, String type, int stock) {
+
+    public Pension(int id, Pension.type type) {
         this.id = id;
         this.type = type;
-        this.stock = stock;
     }
 
     public Pension() {
+    }
+
+    public enum type{
+        UltraAllInclusive,
+        AllInclusive,
+        RoomBreakfast,
+        FullOPension,
+        HalfBoard,
+        JustBed,
+        ExcludingAlcoholFullCredit
+
+    }
+    public ComboItem getComboItem() {
+        return new ComboItem(this.getId(),this.getType());
     }
 
     public int getId() {
@@ -27,11 +42,11 @@ public class Pension {
         this.id = id;
     }
 
-    public String getType() {
+    public Pension.type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Pension.type type) {
         this.type = type;
     }
 
@@ -43,11 +58,4 @@ public class Pension {
         this.pensionHotelId = pensionHotelId;
     }
 
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
 }

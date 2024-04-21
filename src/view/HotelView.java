@@ -1,14 +1,12 @@
 package view;
 
 import business.HotelManager;
+import core.ComboItem;
 import core.Helper;
 import entity.Hotel;
+import entity.Pension;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.ref.PhantomReference;
 
 public class HotelView extends  Layout{
     private JPanel container;
@@ -41,18 +39,33 @@ public class HotelView extends  Layout{
     private JCheckBox chk_spa;
     private JCheckBox chk_service;
     private JButton btn_save;
+    private JLabel lbl_adult_price;
+    private JTextField fld_adult_price;
+    private JLabel lbl_child_price;
+    private JTextField fld_child_price;
+    private JComboBox <Pension.type> cmb_pension;
 
     private Hotel hotel;
 
     private HotelManager hotelManager;
 
+    private Pension pension;
+
 
 
     public HotelView(Hotel hotel) {
+        this.pension=new Pension();
         this.hotel=hotel;
         this.hotelManager= new HotelManager();
         this.add(container);
-        this.guiInitilaze(500,700);
+        this.guiInitilaze(550,600);
+
+
+
+        this.cmb_pension.setModel(new DefaultComboBoxModel<>(Pension.type.values()));
+
+
+
 
         if(this.hotel.getId() != 0){
             this.fld_name.setText(this.hotel.getName());
@@ -62,7 +75,7 @@ public class HotelView extends  Layout{
             this.fld_mail.setText(this.hotel.getMail());
             this.fld_phone.setText(this.hotel.getPhone());
             this.fld_star.setText(Integer.toString(this.hotel.getStar()));
-            this.fld_pension.setText(this.hotel.getPension());
+            this.cmb_pension.getModel().setSelectedItem(this.pension.getType());
             this.chk_park.setSelected(this.hotel.isPark());
             this.chk_wifi.setSelected(this.hotel.isWifi());
             this.chk_pool.setSelected(this.hotel.isPool());
@@ -70,11 +83,13 @@ public class HotelView extends  Layout{
             this.chk_concierge.setSelected(this.hotel.isConcierge());
             this.chk_spa.setSelected(this.hotel.isSpa());
             this.chk_service.setSelected(this.hotel.isService());
+            this.fld_adult_price.setText(Double.toString(this.hotel.getAdultPrice()));
+            this.fld_child_price.setText(Double.toString(this.hotel.getChildPrice()));
         }
 
 
         btn_save.addActionListener(e -> {
-            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name,this.fld_city,this.fld_district,this.fld_address,this.fld_mail,this.fld_phone,this.fld_star,this.fld_pension})) {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name,this.fld_city,this.fld_district,this.fld_address,this.fld_mail,this.fld_phone,this.fld_star,this.fld_adult_price,this.fld_child_price})) {
                 Helper.showMsg("fill");
             }else{
                 boolean result=false;
@@ -85,7 +100,7 @@ public class HotelView extends  Layout{
                 this.hotel.setMail(fld_mail.getText());
                 this.hotel.setPhone(fld_phone.getText());
                 this.hotel.setStar(Integer.parseInt(fld_star.getText()));
-                this.hotel.setPension(fld_pension.getText());
+                this.hotel.setPension((Pension.type) cmb_pension.getSelectedItem());
                 this.hotel.setPark(chk_park.isSelected());
                 this.hotel.setWifi(chk_wifi.isSelected());
                 this.hotel.setPool(chk_pool.isSelected());
@@ -93,6 +108,8 @@ public class HotelView extends  Layout{
                 this.hotel.setConcierge(chk_concierge.isSelected());
                 this.hotel.setSpa(chk_spa.isSelected());
                 this.hotel.setService(chk_service.isSelected());
+                this.hotel.setAdultPrice(Double.parseDouble(fld_adult_price.getText()));
+                this.hotel.setChildPrice(Double.parseDouble(fld_child_price.getText()));
                 if (this.hotel.getId() !=0){
                     result= this.hotelManager.update(this.hotel);
 

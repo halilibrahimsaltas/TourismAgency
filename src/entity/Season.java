@@ -1,6 +1,9 @@
 package entity;
 
 
+import business.HotelManager;
+import core.ComboItem;
+
 import java.time.LocalDate;
 
 public class Season {
@@ -12,13 +15,22 @@ public class Season {
 
     private LocalDate finishDate;
 
+    private Hotel hotel;
+
+
+
     public Season(int id, LocalDate startDate, LocalDate finishDate) {
         this.id = id;
         this.startDate = startDate;
         this.finishDate = finishDate;
+        this.hotel= new Hotel();
+
     }
 
     public Season() {
+    }
+    public ComboItem getComboItem() {
+        return new ComboItem(this.getId(),"Hotel ID: "+this.hotelId+" : "+this.getStartDate()+" ---- "+this.getFinishDate());
     }
 
     public int getId() {

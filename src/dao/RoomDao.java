@@ -36,7 +36,7 @@ public class RoomDao {
         room.setHotelId(rs.getInt("room_hotel_id"));
         room.setSeasonId(rs.getInt("room_season_id"));
         room.setPensionId(rs.getInt("room_pension_id"));
-        room.setType(rs.getString("room_type"));
+        room.setType(Room.type.valueOf(rs.getString("room_type")));
         room.setBedNumber(rs.getInt("room_bed_number"));
         room.setSize(rs.getInt("room_size"));
         room.setTv(rs.getBoolean("room_tv"));
@@ -67,7 +67,7 @@ public class RoomDao {
             pr.setInt(1, room.getHotelId());
             pr.setInt(2, room.getSeasonId());
             pr.setInt(3, room.getPensionId());
-            pr.setString(4, room.getType());
+            pr.setString(4, room.getType().toString());
             pr.setInt(5,room.getBedNumber() );
             pr.setInt(6, room.getSize());
             pr.setBoolean(7, room.isTv());
@@ -106,7 +106,7 @@ public class RoomDao {
             pr.setInt(1, room.getHotelId());
             pr.setInt(2, room.getSeasonId());
             pr.setInt(3, room.getPensionId());
-            pr.setString(4, room.getType());
+            pr.setString(4, room.getType().toString());
             pr.setInt(5, room.getBedNumber());
             pr.setInt(6, room.getSize());
             pr.setBoolean(7, room.isTv());

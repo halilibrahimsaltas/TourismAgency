@@ -1,12 +1,16 @@
 package view;
 
+import business.HotelManager;
 import business.RoomManager;
+import business.SeasonManager;
+import core.ComboItem;
 import core.Helper;
+import entity.Hotel;
+import entity.Pension;
 import entity.Room;
+import entity.Season;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class RoomView extends  Layout{
     private JPanel container;
@@ -35,22 +39,57 @@ public class RoomView extends  Layout{
     private JButton btn_save;
     private JLabel lbl_stock;
     private JTextField fld_stock;
+    private JComboBox<ComboItem> cmb_season;
+    private JComboBox<ComboItem> cmb_hotel;
+    private JComboBox<Pension.type> cmb_pension;
+    private JComboBox<ComboItem> cmb_room;
 
-    private Room room;
+    private final Room room;
 
-    private RoomManager roomManager;
+    private final Hotel hotel;
+    private final Pension pension;
+
+    private final Season season;
+
+    private final RoomManager roomManager;
+
+    private final SeasonManager seasonManager;
+
+    private final HotelManager hotelManager;
+
 
     public RoomView(Room room) {
         this.room=room;
+        this.hotel=new Hotel();
+        this.pension=new Pension();
+        this.season= new Season();
         this.roomManager= new RoomManager();
+        this.seasonManager= new SeasonManager();
+        this.hotelManager=new HotelManager();
+
         this.add(container);
         this.guiInitilaze(500,700);
 
+        this.cmb_pension.setModel(new DefaultComboBoxModel<>(Pension.type.values()));
+        for (Hotel hotel: this.hotelManager.findAll()){
+            this.cmb_hotel.addItem( new ComboItem(hotel.getId(), hotel.getName()));
+        }
+        for (Room room1: this.roomManager.findAll()){
+            this.cmb_room.addItem( new ComboItem(room1.getId(), room1.getType().toString()));
+        }
+
+        for (Season season : this.seasonManager.findAll()){
+            this.cmb_season.addItem(season.getComboItem());
+        }
+
         if(this.room.getId() != 0){
-            this.fld_hotel_id.setText(Integer.toString(this.room.getHotelId()));
-            this.fld_season_id.setText(Integer.toString(this.room.getSeasonId()));
-            this.fld_pension_id.setText(Integer.toString(this.room.getPensionId()));
-            this.fld_type.setText(this.room.getType());
+            ComboItem selectedItem = hotel.getComboItem();
+            ComboItem selectedItemp = pension.getComboItem();
+            ComboItem selectedItems= season.getComboItem();
+            this.cmb_hotel.setSelectedItem(selectedItem);
+            this.cmb_season.setSelectedItem(selectedItems);
+            this.cmb_pension.setSelectedItem(selectedItemp);
+            this.cmb_room.setSelectedItem(this.room.getType());
             this.fld_bed_number.setText(Integer.toString(this.room.getBedNumber()));
             this.fld_size.setText(Integer.toString(this.room.getSize()));
             this.chk_tv.setSelected(this.room.isTv());
@@ -63,14 +102,17 @@ public class RoomView extends  Layout{
         }
 
         btn_save.addActionListener(e -> {
-            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_hotel_id,this.fld_season_id,this.fld_pension_id,this.fld_type,this.fld_bed_number,this.fld_size,this.fld_stock})) {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_bed_number,this.fld_size,this.fld_stock})) {
                 Helper.showMsg("fill");
             }else{
                 boolean result=false;
-                this.room.setHotelId(Integer.parseInt(fld_hotel_id.getText()));
-                this.room.setSeasonId(Integer.parseInt(fld_season_id.getText()));
-                this.room.setPensionId(Integer.parseInt(fld_pension_id.getText()));
-                this.room.setType(fld_type.getText());
+                ComboItem  selectedHotel = (ComboItem) cmb_hotel.getSelectedItem();
+                ComboItem  selectedSeason = (ComboItem) cmb_season.getSelectedItem();
+                ComboItem  selectedPension = (ComboItem) cmb_pension.getSelectedItem();
+                this.room.setHotelId(selectedHotel.getKey());
+                this.room.setSeasonId(selectedSeason.getKey());
+                this.room.setPensionId(selectedPension.getKey());
+                this.room.setType((Room.type) cmb_room.getSelectedItem());
                 this.room.setBedNumber(Integer.parseInt(fld_bed_number.getText()));
                 this.room.setSize(Integer.parseInt(fld_size.getText()));
                 this.room.setTv(chk_tv.isSelected());
