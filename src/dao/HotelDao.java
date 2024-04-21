@@ -42,7 +42,7 @@ public class HotelDao {
         hotel.setMail(rs.getString("hotel_mail"));
         hotel.setPhone(rs.getString("hotel_phone"));
         hotel.setStar(rs.getInt("hotel_star"));
-        hotel.setPension(Pension.type.valueOf(rs.getString("hotel_pension_type")));
+        hotel.setPension(rs.getString("hotel_pension_type"));
         hotel.setPark(rs.getBoolean("hotel_park"));
         hotel.setWifi(rs.getBoolean("hotel_wifi"));
         hotel.setPool(rs.getBoolean("hotel_pool"));
@@ -83,7 +83,7 @@ public class HotelDao {
             pr.setString(5, hotel.getMail());
             pr.setString(6, hotel.getPhone());
             pr.setInt(7, hotel.getStar());
-            pr.setString(8, hotel.getPension().toString());
+            pr.setString(8, hotel.getPension());
             pr.setBoolean(9, hotel.isPark());
             pr.setBoolean(10, hotel.isWifi());
             pr.setBoolean(11, hotel.isPool());
@@ -151,7 +151,7 @@ public class HotelDao {
             pr.setString(5, hotel.getMail());
             pr.setString(6, hotel.getPhone());
             pr.setInt(7, hotel.getStar());
-            pr.setString(8, hotel.getPension().toString());
+            pr.setString(8, hotel.getPension());
             pr.setBoolean(9, hotel.isPark());
             pr.setBoolean(10, hotel.isWifi());
             pr.setBoolean(11, hotel.isPool());

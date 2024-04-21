@@ -4,6 +4,9 @@ import core.Helper;
 import dao.RoomDao;
 import entity.Hotel;
 import entity.Room;
+import entity.Pension;
+import entity.Season;
+
 
 import java.util.ArrayList;
 
@@ -24,9 +27,9 @@ public class RoomManager {
             int i = 0;
             Object[] rowObject = new Object[size];
             rowObject[i++] = obj.getId();
-            rowObject[i++] = obj.getHotelId();
-            rowObject[i++] = obj.getSeasonId();
-            rowObject[i++] = obj.getPensionId();
+            rowObject[i++] = obj.getHotel().getName();
+            rowObject[i++] = obj.getSeason().getComboItem();
+            rowObject[i++] = obj.getPension().getType();
             rowObject[i++] = obj.getType();
             rowObject[i++] = obj.getBedNumber();
             rowObject[i++] = obj.getSize();

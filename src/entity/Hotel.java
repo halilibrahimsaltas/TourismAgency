@@ -18,7 +18,7 @@ public class Hotel {
 
     private int star;
 
-    private Pension.type pension;
+    private String pension;
 
     private boolean park;
 
@@ -52,7 +52,7 @@ public class Hotel {
         this.childPrice = childPrice;
     }
 
-    public Hotel(int id, String name, String city, String district, String address, String mail, String phone, int star, Pension.type pension, boolean park, boolean wifi, boolean pool, boolean fitness, boolean concierge, boolean spa, boolean service, double adultPrice, double childPrice) {
+    public Hotel(int id, String name, String city, String district, String address, String mail, String phone, int star, String pension, boolean park, boolean wifi, boolean pool, boolean fitness, boolean concierge, boolean spa, boolean service, double adultPrice, double childPrice) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -145,11 +145,11 @@ public class Hotel {
         this.star = star;
     }
 
-    public Pension.type getPension() {
+    public String getPension() {
         return pension;
     }
 
-    public void setPension(Pension.type pension) {
+    public void setPension(String pension) {
         this.pension = pension;
     }
 

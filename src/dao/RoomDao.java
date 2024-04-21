@@ -2,7 +2,9 @@ package dao;
 
 import core.Db;
 import entity.Hotel;
+import entity.Pension;
 import entity.Room;
+import entity.Season;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +14,12 @@ import java.util.ArrayList;
 
 public class RoomDao {
     private final Connection con;
+
+    private final HotelDao hotelDao = new HotelDao();
+
+    private final SeasonDao seasonDao= new SeasonDao();
+
+    private final PensionDao pensionDao= new PensionDao();
 
     public RoomDao() {
         this.con= Db.getInstance();
@@ -45,6 +53,9 @@ public class RoomDao {
         room.setChest(rs.getBoolean("room_chest"));
         room.setProjection(rs.getBoolean("room_projection"));
         room.setStock(rs.getInt("room_stock"));
+        room.setHotel(this.hotelDao.getById(rs.getInt("room_hotel_id")));
+        room.setSeason(this.seasonDao.getById(rs.getInt("room_season_id")));
+        room.setPension(this.pensionDao.getById(rs.getInt("room_pension_id")));
         return room;
     }
     public boolean update(Room room) {

@@ -19,18 +19,18 @@ public class Season {
 
 
 
-    public Season(int id, LocalDate startDate, LocalDate finishDate) {
+    public Season(int id, LocalDate startDate, LocalDate finishDate,Hotel hotel) {
         this.id = id;
         this.startDate = startDate;
         this.finishDate = finishDate;
-        this.hotel= new Hotel();
+        this.hotel=hotel;
 
     }
 
     public Season() {
     }
     public ComboItem getComboItem() {
-        return new ComboItem(this.getId(),"Hotel ID: "+this.hotelId+" : "+this.getStartDate()+" ---- "+this.getFinishDate());
+        return new ComboItem(this.getId(),this.getHotel().getName()+" : "+this.getStartDate()+" ---- "+this.getFinishDate());
     }
 
     public int getId() {
@@ -63,5 +63,13 @@ public class Season {
 
     public void setFinishDate(LocalDate finishDate) {
         this.finishDate = finishDate;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
     }
 }

@@ -10,11 +10,14 @@ public class Pension {
 
     private int pensionHotelId;
 
+    private Hotel hotel;
 
 
-    public Pension(int id, Pension.type type) {
+
+    public Pension(int id, Pension.type type,Hotel hotel) {
         this.id = id;
         this.type = type;
+        this.hotel=hotel;
     }
 
     public Pension() {
@@ -58,4 +61,11 @@ public class Pension {
         this.pensionHotelId = pensionHotelId;
     }
 
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
 }

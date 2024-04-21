@@ -1,6 +1,7 @@
 package dao;
 
 import core.Db;
+import entity.Hotel;
 import entity.Pension;
 import entity.Season;
 import view.Layout;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 
 public class PensionDao extends Layout {
     private final Connection con;
+
+    private final HotelDao hotelDao= new HotelDao();
 
     public PensionDao() {
         this.con= Db.getInstance();
@@ -30,17 +33,18 @@ public class PensionDao extends Layout {
         return pensions;
     }
     public ArrayList<Pension> findAll() {
-        return this.selectByQuery("SELECT * FROM public.\"pension\" ORDER BY pension_id ASC");
+        return this.selectByQuery("SELECT * FROM public.\"pension_type\" ORDER BY pension_id ASC");
     }
     public Pension match(ResultSet rs) throws SQLException {
         Pension pension = new Pension();
         pension.setId(rs.getInt("pension_id"));
         pension.setPensionHotelId(rs.getInt("pension_hotel_id"));
         pension.setType(Pension.type.valueOf(rs.getString("pension_type")));
+        pension.setHotel(this.hotelDao.getById(rs.getInt("pension_hotel_id")));
         return pension;
     }
     public boolean save(Pension pension) {
-        String query = "INSERT INTO public.\"pension\" " +
+        String query = "INSERT INTO public.\"pension_type\" " +
                 "(" +
                 "pension_type," +
                 "pension_hotel_id" +
@@ -57,7 +61,7 @@ public class PensionDao extends Layout {
         return true;
     }
     public boolean update(Pension pension) {
-        String query = " UPDATE  public.\"pension\" SET " +
+        String query = " UPDATE  public.\"pension_type\" SET " +
                 "pension_type= ? ," +
                 "pension_hotel_id = ? " +
                 " WHERE pension_id = ?";
@@ -76,7 +80,7 @@ public class PensionDao extends Layout {
 
     public Pension getById(int id) {
         Pension obj = null;
-        String query = "SELECT * FROM public.\"pension\" WHERE pension_id = ?";
+        String query = "SELECT * FROM public.\"pension_type\" WHERE pension_id = ?";
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
             pr.setInt(1, id);
@@ -90,7 +94,7 @@ public class PensionDao extends Layout {
         return obj;
     }
     public boolean delete(int pensionId) {
-        String query = "DELETE FROM public.\"pension\" WHERE pension_id = ?";
+        String query = "DELETE FROM public.\"pension_type\" WHERE pension_id = ?";
 
         try {
             PreparedStatement pr = this.con.prepareStatement(query);

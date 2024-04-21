@@ -11,7 +11,7 @@ public class ComboItem {
 
     private Pension.type type;
 
-    private LocalDate date;
+    private ComboItem date;
 
     public ComboItem(int key, String value) {
         this.key = key;
@@ -23,11 +23,12 @@ public class ComboItem {
         this.type=type;
     }
 
-    public ComboItem(int key ,LocalDate date){
+    public ComboItem(int key ,ComboItem date){
         this.key=key;
         this.date=date;
 
     }
+
 
 
     public int getKey() {

@@ -27,7 +27,14 @@ public class Room {
     private boolean projection;
     private  int stock;
 
-    public Room(int id, Room.type type, int bedNumber, int size, boolean tv, boolean minibar, boolean gameConsole, boolean chest, boolean projection, int stock) {
+    private Hotel hotel;
+    private Season season;
+
+    private Pension pension;
+
+
+
+    public Room(int id, Room.type type, int bedNumber, int size, boolean tv, boolean minibar, boolean gameConsole, boolean chest, boolean projection, int stock, Hotel hotel,Season season,Pension pension) {
         this.id = id;
         this.type = type;
         this.bedNumber = bedNumber;
@@ -38,6 +45,9 @@ public class Room {
         this.chest = chest;
         this.projection = projection;
         this.stock = stock;
+        this.hotel=hotel;
+        this.season=season;
+        this.pension= pension;
     }
 
     public enum type{
@@ -155,5 +165,29 @@ public class Room {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
+    public Season getSeason() {
+        return season;
+    }
+
+    public void setSeason(Season season) {
+        this.season = season;
+    }
+
+    public Pension getPension() {
+        return pension;
+    }
+
+    public void setPension(Pension pension) {
+        this.pension = pension;
     }
 }

@@ -14,6 +14,8 @@ import entity.Season;
 public class SeasonDao {
     private final Connection con;
 
+    private final HotelDao hotelDao= new HotelDao();
+
     public SeasonDao() {
         this.con= Db.getInstance();
     }
@@ -40,6 +42,7 @@ public class SeasonDao {
         season.setHotelId(rs.getInt("season_hotel_id"));
         season.setStartDate(LocalDate.parse(rs.getString("season_start")));
         season.setFinishDate(LocalDate.parse(rs.getString("season_finish")));
+        season.setHotel(this.hotelDao.getById(rs.getInt("season_hotel_id")));
         return season;
     }
     public boolean save(Season season) {

@@ -1,7 +1,6 @@
 package view;
 
 import business.HotelManager;
-import core.ComboItem;
 import core.Helper;
 import entity.Hotel;
 import entity.Pension;
@@ -30,7 +29,7 @@ public class HotelView extends  Layout{
     private JTextField fld_star;
     private JLabel lbl_pension;
     private JLabel pnl_facilities;
-    private JTextField fld_pension;
+
     private JCheckBox chk_park;
     private JCheckBox chk_wifi;
     private JCheckBox chk_pool;
@@ -43,7 +42,7 @@ public class HotelView extends  Layout{
     private JTextField fld_adult_price;
     private JLabel lbl_child_price;
     private JTextField fld_child_price;
-    private JComboBox <Pension.type> cmb_pension;
+    private JTextField fld_hotel_pension_type;
 
     private Hotel hotel;
 
@@ -62,8 +61,6 @@ public class HotelView extends  Layout{
 
 
 
-        this.cmb_pension.setModel(new DefaultComboBoxModel<>(Pension.type.values()));
-
 
 
 
@@ -75,7 +72,7 @@ public class HotelView extends  Layout{
             this.fld_mail.setText(this.hotel.getMail());
             this.fld_phone.setText(this.hotel.getPhone());
             this.fld_star.setText(Integer.toString(this.hotel.getStar()));
-            this.cmb_pension.getModel().setSelectedItem(this.pension.getType());
+            this.fld_hotel_pension_type.setText(this.hotel.getPension());
             this.chk_park.setSelected(this.hotel.isPark());
             this.chk_wifi.setSelected(this.hotel.isWifi());
             this.chk_pool.setSelected(this.hotel.isPool());
@@ -89,7 +86,7 @@ public class HotelView extends  Layout{
 
 
         btn_save.addActionListener(e -> {
-            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name,this.fld_city,this.fld_district,this.fld_address,this.fld_mail,this.fld_phone,this.fld_star,this.fld_adult_price,this.fld_child_price})) {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name,this.fld_city,this.fld_district,this.fld_address,this.fld_mail,this.fld_phone,this.fld_star,this.fld_hotel_pension_type,this.fld_adult_price,this.fld_child_price})) {
                 Helper.showMsg("fill");
             }else{
                 boolean result=false;
@@ -100,7 +97,7 @@ public class HotelView extends  Layout{
                 this.hotel.setMail(fld_mail.getText());
                 this.hotel.setPhone(fld_phone.getText());
                 this.hotel.setStar(Integer.parseInt(fld_star.getText()));
-                this.hotel.setPension((Pension.type) cmb_pension.getSelectedItem());
+                this.hotel.setPension(fld_hotel_pension_type.getText());
                 this.hotel.setPark(chk_park.isSelected());
                 this.hotel.setWifi(chk_wifi.isSelected());
                 this.hotel.setPool(chk_pool.isSelected());
