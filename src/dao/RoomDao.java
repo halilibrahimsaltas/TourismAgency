@@ -1,10 +1,7 @@
 package dao;
 
 import core.Db;
-import entity.Hotel;
-import entity.Pension;
-import entity.Room;
-import entity.Season;
+import entity.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +17,7 @@ public class RoomDao {
     private final SeasonDao seasonDao= new SeasonDao();
 
     private final PensionDao pensionDao= new PensionDao();
+
 
     public RoomDao() {
         this.con= Db.getInstance();

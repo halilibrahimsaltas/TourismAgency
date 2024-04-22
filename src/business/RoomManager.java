@@ -1,21 +1,31 @@
 package business;
 
 import core.Helper;
+import dao.HotelDao;
 import dao.RoomDao;
+import dao.SeasonDao;
 import entity.Hotel;
 import entity.Room;
 import entity.Pension;
 import entity.Season;
 
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class RoomManager {
 
     private RoomDao roomDao;
 
+    private SeasonDao seasonDao;
+
+    private HotelDao hotelDao;
+
     public RoomManager() {
         this.roomDao = new RoomDao();
+        this.seasonDao=new SeasonDao();
+        this.hotelDao= new HotelDao();
     }
     public boolean save(Room room) { return this.roomDao.save(room);}
 
@@ -75,6 +85,47 @@ public class RoomManager {
             Helper.showMsg("notFound");
         }
         return this.roomDao.update(room);
+    }
+    public  ArrayList<Room> searchForReservation( String search,String season_start,int guestCount){
+        String query= "SELECT * FROM public.\"room\" as c LEFT JOIN public.\"hotel\" as m";
+
+        ArrayList<String> where = new ArrayList<>();
+        ArrayList<String> joinWhere = new ArrayList<>();
+        ArrayList<String> seasonWhere = new ArrayList<>();
+        ArrayList<String> isSmall= new ArrayList<>();
+
+        joinWhere.add("c.room_hotel_id = m.hotel_id");
+
+        season_start = LocalDate.parse(season_start).toString();
+
+        if (search != null) {
+            where.add("(m.hotel_city = '" + search + "' OR m.hotel_district = '" + search + "' OR m.hotel_name = '" + search + "')");
+        }
+
+        String whereStr = String.join(" AND ", where);
+        String joinStr = String.join(" AND " , joinWhere);
+
+        if (!joinStr.isEmpty()){
+            query += " ON " + joinStr;
+        }
+
+        if (!whereStr.isEmpty()){
+            query+= " WHERE " + whereStr;
+        }
+
+        seasonWhere.add("'" + season_start + "' BETWEEN season_start AND season_finish");
+
+        String seasonWhereStr = String.join(" AND ", seasonWhere);
+        String seasonQuery = "SELECT * FROM public.\"season\" WHERE " + seasonWhereStr;
+
+        ArrayList<Season> seasonsList = this.seasonDao.selectByQuery(seasonQuery);
+        ArrayList<Room> searchedRoomList = this.roomDao.selectByQuery(query);
+
+
+
+
+        return  this.roomDao.selectByQuery(query);
+
     }
 
 
