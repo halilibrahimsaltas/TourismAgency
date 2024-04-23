@@ -86,24 +86,29 @@ public class RoomManager {
         }
         return this.roomDao.update(room);
     }
-    public  ArrayList<Room> searchForReservation( String search,String season_start,int guestCount){
+    public  ArrayList<Room> searchForReservation( String search,String season_start,Integer guestCount){
         String query= "SELECT * FROM public.\"room\" as c LEFT JOIN public.\"hotel\" as m";
 
         ArrayList<String> where = new ArrayList<>();
         ArrayList<String> joinWhere = new ArrayList<>();
         ArrayList<String> seasonWhere = new ArrayList<>();
-        ArrayList<String> isSmall= new ArrayList<>();
+
 
         joinWhere.add("c.room_hotel_id = m.hotel_id");
 
-        season_start = LocalDate.parse(season_start).toString();
+        season_start = LocalDate.parse(season_start, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toString();
 
-        if (search != null) {
+        if (search != null && !search.isEmpty()) {
             where.add("(m.hotel_city = '" + search + "' OR m.hotel_district = '" + search + "' OR m.hotel_name = '" + search + "')");
+        }
+
+        if (guestCount != null) {
+            where.add("c.room_stock >= " + guestCount);
         }
 
         String whereStr = String.join(" AND ", where);
         String joinStr = String.join(" AND " , joinWhere);
+
 
         if (!joinStr.isEmpty()){
             query += " ON " + joinStr;
@@ -113,6 +118,8 @@ public class RoomManager {
             query+= " WHERE " + whereStr;
         }
 
+
+
         seasonWhere.add("'" + season_start + "' BETWEEN season_start AND season_finish");
 
         String seasonWhereStr = String.join(" AND ", seasonWhere);
@@ -120,8 +127,6 @@ public class RoomManager {
 
         ArrayList<Season> seasonsList = this.seasonDao.selectByQuery(seasonQuery);
         ArrayList<Room> searchedRoomList = this.roomDao.selectByQuery(query);
-
-
 
 
         return  this.roomDao.selectByQuery(query);

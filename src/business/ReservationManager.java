@@ -43,22 +43,24 @@ public class ReservationManager {
         }
         return reservationObjList;
     }
-    public  ArrayList<Reservation> searchForTable(int reservationId ){
-        String select = "SELECT * FROM public.\"reservation\" ";
-        ArrayList<String> whereList = new ArrayList<>();
-
-        if (reservationId!= 0) {
-            whereList.add("reservation_id= "+ reservationId);
+    public ArrayList<Object[]> getForRoomTable(int size,ArrayList<Reservation> reservations) {
+        ArrayList<Object[]> reservationObjList = new ArrayList<>();
+        for (Reservation obj: reservations) {
+            int i = 0;
+            Object[] rowObject = new Object[size];
+            rowObject[i++] = obj.getRoom().getId();
+            rowObject[i++] = obj.getRoom().getHotel().getName();
+            rowObject[i++] = obj.getRoom().getHotel().getCity();
+            rowObject[i++] = obj.getRoom().getSeason().getComboItem();
+            rowObject[i++] = obj.getRoom().getPension().getType().toString();
+            rowObject[i++] = obj.getRoom().getHotel().getAdultPrice();
+            rowObject[i++] = obj.getRoom().getHotel().getChildPrice();
+            rowObject[i++] = obj.getRoom().getStock();
+            reservationObjList.add(rowObject);
         }
-
-        String whereStr = String.join(" AND ", whereList);
-        String query = select;
-        if (!whereStr.isEmpty()){
-            query+= " WHERE "+ whereStr;
-        }
-
-        return  this.reservationDao.selectByQuery(query);
+        return reservationObjList;
     }
+
     public  Reservation getById(int id) { return this.reservationDao.getById(id);}
 
     public  boolean delete(int id){

@@ -46,7 +46,7 @@ public class ReservationDao {
         reservation.setCheckOut(LocalDate.parse(rs.getString("check_outdate")));
         reservation.setTotalPrice(rs.getDouble("total_price"));
         reservation.setTotalGuest(rs.getInt("guest_count"));
-        reservation.setRoom(this.roomDao.getById(rs.getInt("reservation_id")));
+        reservation.setRoom(this.roomDao.getById(rs.getInt("reservation_room_id")));
         return reservation;
     }
     public boolean update(Reservation reservation) {

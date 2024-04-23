@@ -43,7 +43,7 @@ public class RoomView extends  Layout{
     private JComboBox<ComboItem> cmb_season;
     private JComboBox<ComboItem> cmb_hotel;
     private JComboBox<ComboItem> cmb_pension;
-    private JComboBox<ComboItem> cmb_room;
+    private JComboBox<Room.type> cmb_room;
 
     private final Room room;
 
@@ -69,6 +69,7 @@ public class RoomView extends  Layout{
         this.guiInitilaze(500,700);
 
 
+        this.cmb_room.setModel(new DefaultComboBoxModel<>(Room.type.values()));
 
         for(Pension pension: this.pensionManager.findAll()){
             this.cmb_pension.addItem(new ComboItem(pension.getId(),pension.getType().toString()));
@@ -77,9 +78,7 @@ public class RoomView extends  Layout{
         for (Hotel hotel: this.hotelManager.findAll()){
             this.cmb_hotel.addItem( new ComboItem(hotel.getId(), hotel.getName()));
         }
-        for (Room room1: this.roomManager.findAll()){
-            this.cmb_room.addItem( new ComboItem(room1.getId(), room1.getType().toString()));
-        }
+
 
         for (Season season : this.seasonManager.findAll()){
             this.cmb_season.addItem(season.getComboItem());

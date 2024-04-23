@@ -8,6 +8,7 @@ import entity.Room;
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class ReservationView extends  Layout{
@@ -66,6 +67,8 @@ public class ReservationView extends  Layout{
     private JButton btn_logout;
     private JLabel lbl_child;
     private JTextField fld_child_guest;
+    private JLabel lbl_total_price;
+
 
 
     private Reservation reservation;
@@ -83,6 +86,17 @@ public class ReservationView extends  Layout{
 
         this.add(container);
         this.guiInitilaze(900,700);
+        int childCounts=0;
+
+        if (!fld_child_guest.getText().isEmpty()) {
+            try {
+                childCounts = Integer.parseInt(fld_child_guest.getText());
+            } catch (NumberFormatException t) {
+                t.printStackTrace();
+            }
+        }
+        double totalPrices=((((Integer.parseInt(fld_total_guest.getText())-childCounts)*this.reservation.getRoom().getHotel().getAdultPrice())+(this.reservation.getRoom().getHotel().getChildPrice()*childCounts))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText()),LocalDate.parse(this.fld_finish_date.getText())));
+        this.lbl_total_price.setText("Total Price  " + totalPrices + " TL ");
 
         if (this.room.getId() !=0){
             this.fld_hotel_name.setText(this.room.getHotel().getName());
@@ -96,7 +110,7 @@ public class ReservationView extends  Layout{
             this.chk_service.setSelected(this.room.getHotel().isService());
             this.chk_wifi.setSelected(this.room.getHotel().isWifi());
             this.fld_room_type.setText(this.room.getType().toString());
-            this.fld_pension_type.setText(this.room.getPension().toString());
+            this.fld_pension_type.setText(this.room.getPension().getType().toString());
             this.fld_bed_capacity.setText(Integer.toString(this.room.getBedNumber()));
             this.fld_room_size.setText(Integer.toString(this.room.getSize()));
             this.chk_tv.setSelected(this.room.isTv());
@@ -105,6 +119,8 @@ public class ReservationView extends  Layout{
             this.chk_chest.setSelected(this.room.isChest());
             this.chk_projection.setSelected(this.room.isProjection());
         }
+
+
 
         if(this.reservation.getId()!=0){
             this.fld_hotel_name.setText(this.reservation.getRoom().getHotel().getName());
@@ -118,7 +134,7 @@ public class ReservationView extends  Layout{
             this.chk_service.setSelected(this.reservation.getRoom().getHotel().isService());
             this.chk_wifi.setSelected(this.reservation.getRoom().getHotel().isWifi());
             this.fld_room_type.setText(this.reservation.getRoom().getType().toString());
-            this.fld_pension_type.setText(this.reservation.getRoom().getPension().toString());
+            this.fld_pension_type.setText(this.reservation.getRoom().getPension().getType().toString());
             this.fld_bed_capacity.setText(Integer.toString(this.reservation.getRoom().getBedNumber()));
             this.fld_room_size.setText(Integer.toString(this.reservation.getRoom().getSize()));
             this.fld_start_date.setText(this.reservation.getCheckIn().toString());
@@ -196,7 +212,7 @@ public class ReservationView extends  Layout{
             this.chk_service.setSelected(this.room.getHotel().isService());
             this.chk_wifi.setSelected(this.room.getHotel().isWifi());
             this.fld_room_type.setText(this.room.getType().toString());
-            this.fld_pension_type.setText(this.room.getPension().toString());
+            this.fld_pension_type.setText(this.room.getPension().getType().toString());
             this.fld_bed_capacity.setText(Integer.toString(this.room.getBedNumber()));
             this.fld_room_size.setText(Integer.toString(this.room.getSize()));
             this.chk_tv.setSelected(this.room.isTv());
@@ -228,14 +244,17 @@ public class ReservationView extends  Layout{
                 this.reservation.setCheckIn(LocalDate.parse(fld_start_date.getText()));
                 this.reservation.setCheckOut(LocalDate.parse(fld_finish_date.getText()));
                 this.reservation.setTotalPrice(totalPrice);
+                this.room.setStock((this.room.getStock()-Integer.parseInt(fld_total_guest.getText())));
                 if (this.reservation.getId() !=0){
                     result= this.reservationManager.update(this.reservation);
 
                 }else {
                     result = this.reservationManager.save(this.room,this.reservation);
+                    this.roomManager.update(this.room);
                 }
                 if(result){
                     Helper.showMsg("done");
+
                     dispose();
                 }else {
                     Helper.showMsg("error");
@@ -246,6 +265,21 @@ public class ReservationView extends  Layout{
 
 
 
+
+    }
+
+    private void loadPrice(int total, int child){
+        int childCounts=0;
+
+        if (!fld_child_guest.getText().isEmpty()) {
+            try {
+                childCounts = Integer.parseInt(fld_child_guest.getText());
+            } catch (NumberFormatException t) {
+                t.printStackTrace();
+            }
+        }
+        double totalPrices=((((Integer.parseInt(fld_total_guest.getText())-childCounts)*this.reservation.getRoom().getHotel().getAdultPrice())+(this.reservation.getRoom().getHotel().getChildPrice()*childCounts))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText()),LocalDate.parse(this.fld_finish_date.getText())));
+        this.lbl_total_price.setText("Total Price  " + totalPrices + " TL ");
 
     }
 

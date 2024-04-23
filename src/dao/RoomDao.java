@@ -107,7 +107,7 @@ public class RoomDao {
                 "room_game_console," +
                 "room_chest," +
                 "room_projection," +
-                "room_stock," +
+                "room_stock" +
                 ")" +
                 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
