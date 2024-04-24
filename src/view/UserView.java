@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UserView  extends  Layout{
+
+    // GUI components
     private JPanel container;
     private JPanel pnl_user_header;
     private JLabel lbl_user_header;
@@ -24,20 +26,22 @@ public class UserView  extends  Layout{
     private JTextField fld_role;
 
 
+    // Instance variables
     private User user;
 
     private UserManager userManager;
 
 
 
+    // Constructor for UserView with User object
     public UserView(User user) {
         this.add(container);
         this.userManager=new UserManager();
         this.guiInitilaze(300,500);
         this.user=user;
 
+        // Populate role combo box with enum values
         this.cmb_role.setModel(new DefaultComboBoxModel<>(User.Role.values()));
-
 
 
         if(this.user.getId() != 0){
@@ -46,11 +50,13 @@ public class UserView  extends  Layout{
         }
 
 
+        // Populate fields with user details if it already exists
         if (user != null){
             this.fld_username.setText(user.getUsername());
             this.fld_password.setText(user.getPassword());
             this.cmb_role.setSelectedItem(user.getRole());
         }
+        // Action listener for the save button
         btn_save.addActionListener(e -> {
             if(Helper.isFieldEmpty(this.fld_username)){
                 Helper.showMsg("fill");

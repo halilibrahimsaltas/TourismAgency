@@ -8,6 +8,8 @@ import entity.Pension;
 import javax.swing.*;
 
 public class HotelView extends  Layout{
+
+    // Components in the view
     private JPanel container;
     private JPanel pnl_header;
     private JLabel lbl_hotel_add;
@@ -38,20 +40,18 @@ public class HotelView extends  Layout{
     private JCheckBox chk_spa;
     private JCheckBox chk_service;
     private JButton btn_save;
-    private JLabel lbl_adult_price;
-    private JTextField fld_adult_price;
-    private JLabel lbl_child_price;
-    private JTextField fld_child_price;
+
     private JTextField fld_hotel_pension_type;
 
     private Hotel hotel;
 
+    // Business logic manager for Hotel operations
     private HotelManager hotelManager;
 
     private Pension pension;
 
 
-
+    // Constructor for HotelView
     public HotelView(Hotel hotel) {
         this.pension=new Pension();
         this.hotel=hotel;
@@ -60,10 +60,7 @@ public class HotelView extends  Layout{
         this.guiInitilaze(550,600);
 
 
-
-
-
-
+        // Fill form fields with hotel data if hotel exists (for update operation)
         if(this.hotel.getId() != 0){
             this.fld_name.setText(this.hotel.getName());
             this.fld_city.setText(this.hotel.getCity());
@@ -80,16 +77,16 @@ public class HotelView extends  Layout{
             this.chk_concierge.setSelected(this.hotel.isConcierge());
             this.chk_spa.setSelected(this.hotel.isSpa());
             this.chk_service.setSelected(this.hotel.isService());
-            this.fld_adult_price.setText(Double.toString(this.hotel.getAdultPrice()));
-            this.fld_child_price.setText(Double.toString(this.hotel.getChildPrice()));
+
         }
 
-
+        // Action listener for the save button
         btn_save.addActionListener(e -> {
-            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name,this.fld_city,this.fld_district,this.fld_address,this.fld_mail,this.fld_phone,this.fld_star,this.fld_hotel_pension_type,this.fld_adult_price,this.fld_child_price})) {
+            if (Helper.isFieldListEmpty(new JTextField[]{this.fld_name,this.fld_city,this.fld_district,this.fld_address,this.fld_mail,this.fld_phone,this.fld_star,this.fld_hotel_pension_type})) {
                 Helper.showMsg("fill");
             }else{
                 boolean result=false;
+                // Set hotel properties from the input fields
                 this.hotel.setName(fld_name.getText());
                 this.hotel.setCity(fld_city.getText());
                 this.hotel.setDistrict(fld_district.getText());
@@ -105,8 +102,8 @@ public class HotelView extends  Layout{
                 this.hotel.setConcierge(chk_concierge.isSelected());
                 this.hotel.setSpa(chk_spa.isSelected());
                 this.hotel.setService(chk_service.isSelected());
-                this.hotel.setAdultPrice(Double.parseDouble(fld_adult_price.getText()));
-                this.hotel.setChildPrice(Double.parseDouble(fld_child_price.getText()));
+
+                // Save or update the hotel based on whether it already exists
                 if (this.hotel.getId() !=0){
                     result= this.hotelManager.update(this.hotel);
 
@@ -122,7 +119,6 @@ public class HotelView extends  Layout{
             }
 
         });
-
 
 
     }

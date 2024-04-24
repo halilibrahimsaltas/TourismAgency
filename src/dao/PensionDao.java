@@ -116,5 +116,23 @@ public class PensionDao extends Layout {
 
         return true;
     }
+    public ArrayList<Pension> getAllByHotelId(int hotelId) {
+        ArrayList<Pension> pensions = new ArrayList<>();
+        String query = "SELECT * FROM public.\"pension_type\" WHERE pension_hotel_id = ?";
+
+        try (PreparedStatement preparedStatement = this.con.prepareStatement(query)) {
+            preparedStatement.setInt(1, hotelId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    pensions.add(match(resultSet));
+                }
+            }
+        }catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return pensions;
+    }
 
 }

@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="container" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="10" left="10" bottom="10" right="10"/>
     <constraints>
-      <xy x="20" y="20" width="523" height="566"/>
+      <xy x="20" y="20" width="559" height="574"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -133,23 +133,6 @@
               <text value="TV"/>
             </properties>
           </component>
-          <component id="db1c" class="javax.swing.JCheckBox" binding="chk_minibar">
-            <constraints>
-              <grid row="13" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <selected value="false"/>
-              <text value="Minibar"/>
-            </properties>
-          </component>
-          <component id="ddc8" class="javax.swing.JCheckBox" binding="chk_game_console">
-            <constraints>
-              <grid row="13" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <text value="Game Console"/>
-            </properties>
-          </component>
           <component id="8c2e" class="javax.swing.JCheckBox" binding="chk_chest">
             <constraints>
               <grid row="14" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -203,6 +186,55 @@
           <component id="69034" class="javax.swing.JComboBox" binding="cmb_room">
             <constraints>
               <grid row="7" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="9b95" class="javax.swing.JLabel" binding="lbl_adultPrice">
+            <constraints>
+              <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Adult Price"/>
+            </properties>
+          </component>
+          <component id="28521" class="javax.swing.JTextField" binding="fld_adult_price">
+            <constraints>
+              <grid row="12" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="ddc8" class="javax.swing.JCheckBox" binding="chk_game_console">
+            <constraints>
+              <grid row="14" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Game Console"/>
+            </properties>
+          </component>
+          <component id="db1c" class="javax.swing.JCheckBox" binding="chk_minibar">
+            <constraints>
+              <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <selected value="false"/>
+              <text value="Minibar"/>
+            </properties>
+          </component>
+          <component id="bb1a6" class="javax.swing.JLabel" binding="lbl_childPrice">
+            <constraints>
+              <grid row="13" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Child Price"/>
+            </properties>
+          </component>
+          <component id="b1fac" class="javax.swing.JTextField" binding="fld_child_price">
+            <constraints>
+              <grid row="13" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
             </constraints>
             <properties/>
           </component>

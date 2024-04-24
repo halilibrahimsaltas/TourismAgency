@@ -52,7 +52,11 @@ public class AdministrationView extends  Layout{
         loadUserFilter();
 
 
+        btn_logout.addActionListener(e -> {
+            LoginView loginView= new LoginView();
+            dispose();
 
+        });
     }
     // Load user table
     public void loadUserTable(ArrayList<Object[]> userList) {

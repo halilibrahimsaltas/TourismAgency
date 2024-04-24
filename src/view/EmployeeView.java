@@ -7,6 +7,8 @@ import entity.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.format.DateTimeParseException;
@@ -143,6 +145,11 @@ public class EmployeeView extends Layout {
         loadReservationRoomTable(null);
         loadReservationRoomComponent();
 
+        btn_logout.addActionListener(e -> {
+            LoginView loginView = new LoginView();
+            dispose();
+
+        });
     }
 
 
@@ -153,7 +160,6 @@ public class EmployeeView extends Layout {
         }
         this.createTable(this.tmdl_reservation_room, this.tbl_reservation_room, col_reservation_room, reservationRoomList);
 
-        tbl_reservation_room.getColumnModel().getColumn(3).setPreferredWidth(400);
         tbl_reservation_room.getColumnModel().getColumn(1).setPreferredWidth(300);
 
     }
@@ -180,7 +186,7 @@ public class EmployeeView extends Layout {
 
 
     private void loadRoomTable(ArrayList<Object[]> roomList) {
-        col_room = new Object[]{"ID", "Hotel ", "Season ", "Pension ", "Type", "Bed Number", "Size", "TV", "Minibar", "GameCons.", "Chest", "Projection", "Stock"};
+        col_room = new Object[]{"ID", "Hotel ", "Season ", "Pension ", "Type", "Bed Number", "Size", "TV", "Minibar", "GameCons.", "Chest", "Projection", "Stock", "Adult Price", "Child Price"};
         if (roomList == null){
             roomList = this.roomManager.getForTable(this.col_room.length, this.roomManager.findAll());
         }
@@ -189,11 +195,11 @@ public class EmployeeView extends Layout {
         tbl_room.getColumnModel().getColumn(0).setPreferredWidth(30);
         tbl_room.getColumnModel().getColumn(1).setPreferredWidth(250);
         tbl_room.getColumnModel().getColumn(3).setPreferredWidth(150);
-        tbl_room.getColumnModel().getColumn(2).setPreferredWidth(400);
+
     }
 
     private void loadSeasonTable(ArrayList<Object[]> seasonList) {
-        col_season = new Object[]{"ID","Hotel ","Season Start Date","Season Finish Date"};
+        col_season = new Object[]{"ID","Hotel ","Season Start Date","Season Finish Date","Season "};
         if (seasonList == null){
             seasonList = this.seasonManager.getForTable(this.col_season.length, this.seasonManager.findAll());
         }
@@ -201,7 +207,7 @@ public class EmployeeView extends Layout {
     }
 
     public void loadHotelTable(ArrayList<Object[]> hotelList) {
-        col_hotel = new Object[]{"ID", "Name", "City", "District", "Address", "Mail", "Phone", "Star", "Pension", "Park", "WiFi", "Pool", "Fitness", "Concierge", "SPA", "RoomSer","Adult Price","Child Price"};
+        col_hotel = new Object[]{"ID", "Name", "City", "District", "Address", "Mail", "Phone", "Star", "Pension", "Park", "WiFi", "Pool", "Fitness", "Concierge", "SPA", "RoomSer"};
         if (hotelList == null) {
             hotelList = this.hotelManager.getForTable(this.col_hotel.length, this.hotelManager.findAll());
         }
@@ -349,6 +355,7 @@ public class EmployeeView extends Layout {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadRoomTable(null);
+                    loadReservationRoomTable(null);
 
                 }
             });
@@ -360,6 +367,7 @@ public class EmployeeView extends Layout {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadRoomTable(null);
+                    loadReservationRoomTable(null);
 
                 }
             });
@@ -371,6 +379,7 @@ public class EmployeeView extends Layout {
                 if (this.roomManager.delete(selectSeasonId)) {
                     Helper.showMsg("done");
                     loadRoomTable(null);
+                    loadReservationRoomTable(null);
 
                 } else {
                     Helper.showMsg("error");

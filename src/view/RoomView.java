@@ -12,8 +12,13 @@ import entity.Room;
 import entity.Season;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class RoomView extends  Layout{
+
+    // Components in the view
     private JPanel container;
     private JPanel pnl_header;
     private JLabel lbl_header;
@@ -44,11 +49,16 @@ public class RoomView extends  Layout{
     private JComboBox<ComboItem> cmb_hotel;
     private JComboBox<ComboItem> cmb_pension;
     private JComboBox<Room.type> cmb_room;
+    private JLabel lbl_adultPrice;
+    private JTextField fld_adult_price;
+    private JLabel lbl_childPrice;
+    private JTextField fld_child_price;
 
     private final Room room;
 
 
 
+    // Instance variables
     private final RoomManager roomManager;
 
     private final SeasonManager seasonManager;
@@ -58,6 +68,7 @@ public class RoomView extends  Layout{
     private final PensionManager pensionManager;
 
 
+    // Constructor for RoomView with Room object
     public RoomView(Room room) {
         this.room=room;
         this.roomManager= new RoomManager();
@@ -66,28 +77,47 @@ public class RoomView extends  Layout{
         this.pensionManager= new PensionManager();
 
         this.add(container);
-        this.guiInitilaze(500,700);
+        this.guiInitilaze(600,700);
 
+
+         cmb_season.removeAllItems();
+         cmb_pension.removeAllItems();
 
         this.cmb_room.setModel(new DefaultComboBoxModel<>(Room.type.values()));
 
-        for(Pension pension: this.pensionManager.findAll()){
-            this.cmb_pension.addItem(new ComboItem(pension.getId(),pension.getType().toString()));
-        }
 
+        cmb_hotel.addActionListener(e -> {
+            cmb_season.removeAllItems();
+            cmb_pension.removeAllItems();
+            ComboItem  selectedHotel = (ComboItem) cmb_hotel.getSelectedItem();
+
+            for (Season season : seasonManager.getAllByHotelId(selectedHotel.getKey())){
+                this.cmb_season.addItem( new ComboItem(season.getId(), season.getSeasonName()));
+            }
+            for(Pension pension: this.pensionManager.getAllByHotelId(selectedHotel.getKey())){
+                this.cmb_pension.addItem(new ComboItem(pension.getId(),pension.getType().toString()));
+            }
+
+        });
+
+
+
+        // Populate combo boxes with hotel data
         for (Hotel hotel: this.hotelManager.findAll()){
             this.cmb_hotel.addItem( new ComboItem(hotel.getId(), hotel.getName()));
         }
 
 
-        for (Season season : this.seasonManager.findAll()){
-            this.cmb_season.addItem(season.getComboItem());
-        }
 
+
+        // Populate combo boxes with season data
+
+
+        // Method to populate room fields with room details
         if(this.room.getId() != 0){
             ComboItem defaultHotel = new ComboItem(this.room.getHotel().getId(),this.room.getHotel().getName());
             this.cmb_hotel.getModel().setSelectedItem(defaultHotel);
-            this.cmb_season.getModel().setSelectedItem(this.room.getSeason().getComboItem());
+            this.cmb_season.getModel().setSelectedItem(this.room.getSeason().getSeasonName());
             this.cmb_pension.getModel().setSelectedItem(this.room.getPension().getType());
             this.cmb_room.getModel().setSelectedItem(this.room.getType());
             this.fld_bed_number.setText(Integer.toString(this.room.getBedNumber()));
@@ -98,9 +128,12 @@ public class RoomView extends  Layout{
             this.chk_chest.setSelected(this.room.isChest());
             this.chk_projection.setSelected(this.room.isProjection());
             this.fld_stock.setText(Integer.toString(this.room.getStock()));
+            this.fld_adult_price.setText(Double.toString(this.room.getAdultPrice()));
+            this.fld_child_price.setText(Double.toString(this.room.getChildPrice()));
 
         }
 
+        // Method to save or update room
         btn_save.addActionListener(e -> {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_bed_number,this.fld_size,this.fld_stock})) {
                 Helper.showMsg("fill");
@@ -121,6 +154,8 @@ public class RoomView extends  Layout{
                 this.room.setChest(chk_chest.isSelected());
                 this.room.setProjection(chk_projection.isSelected());
                 this.room.setStock(Integer.parseInt(fld_stock.getText()));
+                this.room.setAdultPrice(Double.parseDouble(fld_adult_price.getText()));
+                this.room.setChildPrice(Double.parseDouble(fld_child_price.getText()));
                 if (this.room.getId() !=0){
                     result= this.roomManager.update(this.room);
 
@@ -136,5 +171,8 @@ public class RoomView extends  Layout{
             }
 
         });
+
     }
+
+
 }

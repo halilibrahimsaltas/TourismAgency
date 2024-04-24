@@ -62,10 +62,10 @@ public class ReservationManager {
             rowObject[i++] = obj.getRoom().getId();
             rowObject[i++] = obj.getRoom().getHotel().getName();
             rowObject[i++] = obj.getRoom().getHotel().getCity();
-            rowObject[i++] = obj.getRoom().getSeason().getComboItem();
+            rowObject[i++] = obj.getRoom().getSeason().getSeasonName();
             rowObject[i++] = obj.getRoom().getPension().getType().toString();
-            rowObject[i++] = obj.getRoom().getHotel().getAdultPrice();
-            rowObject[i++] = obj.getRoom().getHotel().getChildPrice();
+            rowObject[i++] = obj.getRoom().getAdultPrice();
+            rowObject[i++] = obj.getRoom().getChildPrice();
             rowObject[i++] = obj.getRoom().getStock();
             reservationObjList.add(rowObject);
         }
@@ -80,10 +80,10 @@ public class ReservationManager {
             rowObject[i++] = obj.getId();
             rowObject[i++] = obj.getHotel().getName();
             rowObject[i++] = obj.getHotel().getCity();
-            rowObject[i++] = obj.getSeason().getComboItem();
+            rowObject[i++] = obj.getSeason().getSeasonName();
             rowObject[i++] = obj.getPension().getType().toString();
-            rowObject[i++] = obj.getHotel().getAdultPrice();
-            rowObject[i++] = obj.getHotel().getChildPrice();
+            rowObject[i++] = obj.getAdultPrice();
+            rowObject[i++] = obj.getChildPrice();
             rowObject[i++] = obj.getStock();
             reservationObjList.add(rowObject);
         }

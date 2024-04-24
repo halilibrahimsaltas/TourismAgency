@@ -47,8 +47,6 @@ public class HotelManager {
             rowObject[i++] = obj.isConcierge() ? "Yes" : "No";
             rowObject[i++] = obj.isSpa() ? "Yes" : "No";
             rowObject[i++] = obj.isService() ? "Yes" : "No";
-            rowObject[i++] = obj.getAdultPrice();
-            rowObject[i++] = obj.getChildPrice();
             hotelObjList.add(rowObject);
         }
         return hotelObjList;

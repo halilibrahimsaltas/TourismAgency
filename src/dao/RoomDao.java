@@ -61,6 +61,8 @@ public class RoomDao {
         room.setHotel(this.hotelDao.getById(rs.getInt("room_hotel_id")));
         room.setSeason(this.seasonDao.getById(rs.getInt("room_season_id")));
         room.setPension(this.pensionDao.getById(rs.getInt("room_pension_id")));
+        room.setAdultPrice(rs.getDouble("room_adult_price"));
+        room.setChildPrice(rs.getDouble("room_child_price"));
         return room;
     }
 
@@ -78,7 +80,9 @@ public class RoomDao {
                 "room_game_console= ? ," +
                 "room_chest= ? ," +
                 "room_projection= ? ," +
-                "room_stock= ? " +
+                "room_stock= ? ," +
+                "room_adult_price= ? ," +
+                "room_child_price= ? " +
                 " WHERE room_id = ?";
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
@@ -94,7 +98,9 @@ public class RoomDao {
             pr.setBoolean(10, room.isChest());
             pr.setBoolean(11, room.isProjection());
             pr.setInt(12, room.getStock());
-            pr.setInt(13,room.getId());
+            pr.setDouble(13, room.getAdultPrice());
+            pr.setDouble(14, room.getChildPrice());
+            pr.setInt(15,room.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException throwable) {
             throwable.printStackTrace();
@@ -117,9 +123,11 @@ public class RoomDao {
                 "room_game_console," +
                 "room_chest," +
                 "room_projection," +
-                "room_stock" +
+                "room_stock," +
+                "room_adult_price," +
+                "room_child_price" +
                 ")" +
-                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pr = con.prepareStatement(query);
             pr.setInt(1, room.getHotelId());
@@ -134,6 +142,8 @@ public class RoomDao {
             pr.setBoolean(10, room.isChest());
             pr.setBoolean(11, room.isProjection());
             pr.setInt(12, room.getStock());
+            pr.setDouble(13, room.getAdultPrice());
+            pr.setDouble(14, room.getChildPrice());
             return pr.executeUpdate() != -1;
         } catch (SQLException throwables) {
             throwables.printStackTrace();

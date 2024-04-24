@@ -28,6 +28,9 @@ public class Room {
     private boolean chest;
     private boolean projection;
     private  int stock;
+    private double adultPrice;
+
+    private double childPrice;
 
     private Hotel hotel;
     private Season season;
@@ -38,7 +41,7 @@ public class Room {
 
 
     // Constructor with parameters
-    public Room(int id, Room.type type, int bedNumber, int size, boolean tv, boolean minibar, boolean gameConsole, boolean chest, boolean projection, int stock, Hotel hotel,Season season,Pension pension,Reservation reservation) {
+    public Room(int id, Room.type type, int bedNumber, int size, boolean tv, boolean minibar, boolean gameConsole, boolean chest, boolean projection, int stock, Hotel hotel,Season season,Pension pension,Reservation reservation, double adultPrice, double childPrice) {
         this.id = id;
         this.type = type;
         this.bedNumber = bedNumber;
@@ -52,6 +55,8 @@ public class Room {
         this.hotel=hotel;
         this.season=season;
         this.pension= pension;
+        this.adultPrice=adultPrice;
+        this.childPrice=childPrice;
         this.reservation=reservation;
     }
 
@@ -202,5 +207,21 @@ public class Room {
 
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
+    }
+
+    public double getAdultPrice() {
+        return adultPrice;
+    }
+
+    public void setAdultPrice(double adultPrice) {
+        this.adultPrice = adultPrice;
+    }
+
+    public double getChildPrice() {
+        return childPrice;
+    }
+
+    public void setChildPrice(double childPrice) {
+        this.childPrice = childPrice;
     }
 }

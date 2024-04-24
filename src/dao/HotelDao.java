@@ -54,8 +54,6 @@ public class HotelDao {
         hotel.setConcierge(rs.getBoolean("hotel_concierge"));
         hotel.setSpa(rs.getBoolean("hotel_spa"));
         hotel.setService(rs.getBoolean("hotel_room_service"));
-        hotel.setAdultPrice(rs.getDouble("adult_price"));
-        hotel.setChildPrice(rs.getDouble("child_price"));
         return hotel;
     }
 
@@ -76,9 +74,7 @@ public class HotelDao {
                 "hotel_fitness= ? ," +
                 "hotel_concierge= ? ," +
                 "hotel_spa= ? ," +
-                "hotel_room_service= ? ," +
-                "adult_price= ? ," +
-                "child_price= ? " +
+                "hotel_room_service= ? " +
                 " WHERE hotel_id = ?";
         try {
             PreparedStatement pr = this.con.prepareStatement(query);
@@ -97,9 +93,7 @@ public class HotelDao {
             pr.setBoolean(13, hotel.isConcierge());
             pr.setBoolean(14, hotel.isSpa());
             pr.setBoolean(15, hotel.isService());
-            pr.setDouble(16,hotel.getAdultPrice());
-            pr.setDouble(17,hotel.getChildPrice());
-            pr.setInt(18,hotel.getId());
+            pr.setInt(16,hotel.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException throwable) {
             throwable.printStackTrace();
@@ -148,9 +142,7 @@ public class HotelDao {
                 "hotel_fitness," +
                 "hotel_concierge," +
                 "hotel_spa," +
-                "hotel_room_service," +
-                "adult_price," +
-                "child_price" +
+                "hotel_room_service" +
                 ")" +
                 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
@@ -170,8 +162,6 @@ public class HotelDao {
             pr.setBoolean(13, hotel.isConcierge());
             pr.setBoolean(14, hotel.isSpa());
             pr.setBoolean(15, hotel.isService());
-            pr.setDouble(16,hotel.getAdultPrice());
-            pr.setDouble(17,hotel.getChildPrice());
             return pr.executeUpdate() != -1;
         } catch (SQLException throwables) {
             throwables.printStackTrace();

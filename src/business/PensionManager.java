@@ -60,5 +60,8 @@ public class PensionManager {
         }
         return this.pensionDao.update(pension);
     }
+    public ArrayList<Pension> getAllByHotelId(int hotelId) {
+        return pensionDao.getAllByHotelId(hotelId);
+    }
 
 }

@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class ReservationView extends  Layout{
+    // Components in the view
     private JPanel container;
     private JPanel pnl_header;
     private JLabel lbl_header;
@@ -80,6 +81,7 @@ public class ReservationView extends  Layout{
     private RoomManager roomManager;
     private ReservationManager reservationManager;
 
+    // Constructor for ReservationView with Reservation object
     public ReservationView(Reservation reservation) {
         this.reservation=reservation;
         this.room=new Room();
@@ -123,6 +125,7 @@ public class ReservationView extends  Layout{
         }
 
 
+        // Action listener for the save button
         btn_save.addActionListener(e -> {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_customerName,this.fld_customer_citizenId,this.fld_mail,this.fld_mpno,this.fld_total_guest,this.fld_start_date,this.fld_finish_date})) {
                 Helper.showMsg("fill");
@@ -135,7 +138,7 @@ public class ReservationView extends  Layout{
                         t.printStackTrace();
                     }
                 }
-                double totalPrice=((((Integer.parseInt(fld_total_guest.getText())-childCount)*this.reservation.getRoom().getHotel().getAdultPrice())+(this.reservation.getRoom().getHotel().getChildPrice()*childCount))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy")),LocalDate.parse(this.fld_finish_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
+                double totalPrice=((((Integer.parseInt(fld_total_guest.getText())-childCount)*this.reservation.getRoom().getAdultPrice())+(this.reservation.getRoom().getChildPrice()*childCount))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy")),LocalDate.parse(this.fld_finish_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
                 boolean result=false;
                 this.reservation.setCustomerName(fld_customerName.getText());
                 this.reservation.setCustomerCN(fld_customer_citizenId.getText());
@@ -158,6 +161,7 @@ public class ReservationView extends  Layout{
             }
 
         });
+        // Add DocumentListener to fld_total_guest
         fld_total_guest.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -227,6 +231,7 @@ public class ReservationView extends  Layout{
             this.chk_projection.setSelected(this.room.isProjection());
         }
 
+        // Action listener for the save button
         btn_save.addActionListener(e -> {
             if (Helper.isFieldListEmpty(new JTextField[]{this.fld_customerName,this.fld_customer_citizenId,this.fld_mail,this.fld_mpno,this.fld_total_guest,this.fld_start_date,this.fld_finish_date})) {
                 Helper.showMsg("fill");
@@ -239,7 +244,7 @@ public class ReservationView extends  Layout{
                         t.printStackTrace();
                     }
                 }
-                double totalPrice=((((Integer.parseInt(fld_total_guest.getText())-childCount)*this.room.getHotel().getAdultPrice())+(this.room.getHotel().getChildPrice()*childCount))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy")),LocalDate.parse(this.fld_finish_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
+                double totalPrice=((((Integer.parseInt(fld_total_guest.getText())-childCount)*this.room.getAdultPrice())+(this.room.getChildPrice()*childCount))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy")),LocalDate.parse(this.fld_finish_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
                 boolean result=false;
                 this.reservation.setCustomerName(fld_customerName.getText());
                 this.reservation.setCustomerCN(fld_customer_citizenId.getText());
@@ -267,6 +272,7 @@ public class ReservationView extends  Layout{
             }
 
         });
+        // Add DocumentListener to fld_total_guest
         fld_total_guest.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -305,7 +311,7 @@ public class ReservationView extends  Layout{
 
 
     }
-
+    // Method to update total price
     private void updateTotalPrice() {
         try {
         int totalGuest = fld_total_guest.getText().isEmpty() ? 0 : Integer.parseInt(fld_total_guest.getText());
@@ -313,8 +319,8 @@ public class ReservationView extends  Layout{
         LocalDate startDate = LocalDate.parse(this.fld_start_date.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         LocalDate finishDate = LocalDate.parse(this.fld_finish_date.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
-        double totalPrice = ((((totalGuest - childGuest) * this.reservation.getRoom().getHotel().getAdultPrice()) +
-                (this.reservation.getRoom().getHotel().getChildPrice() * childGuest)) *
+        double totalPrice = ((((totalGuest - childGuest) * this.reservation.getRoom().getAdultPrice()) +
+                (this.reservation.getRoom().getChildPrice() * childGuest)) *
                 ChronoUnit.DAYS.between(startDate, finishDate));
 
         this.lbl_total_price.setText("Total Price: " + totalPrice + " TL");
@@ -323,6 +329,7 @@ public class ReservationView extends  Layout{
             lbl_total_price.setText("Total Price: Invalid input");
         }
     }
+    // Method to update total price
     private void updateTotalPriceForRoom() {
         try {
             int totalGuest = fld_total_guest.getText().isEmpty() ? 0 : Integer.parseInt(fld_total_guest.getText());
@@ -330,8 +337,8 @@ public class ReservationView extends  Layout{
             LocalDate startDate = LocalDate.parse(this.fld_start_date.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             LocalDate finishDate = LocalDate.parse(this.fld_finish_date.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
-            double totalPrice = ((((totalGuest - childGuest) * this.room.getHotel().getAdultPrice()) +
-                    (this.room.getHotel().getChildPrice() * childGuest)) *
+            double totalPrice = ((((totalGuest - childGuest) * this.room.getAdultPrice()) +
+                    (this.room.getChildPrice() * childGuest)) *
                     ChronoUnit.DAYS.between(startDate, finishDate));
 
             this.lbl_total_price.setText("Total Price: " + totalPrice + " TL");
@@ -340,8 +347,6 @@ public class ReservationView extends  Layout{
             lbl_total_price.setText("Total Price: Invalid input");
         }
     }
-
-
 
 
 }

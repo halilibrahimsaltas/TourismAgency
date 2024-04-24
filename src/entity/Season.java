@@ -17,24 +17,30 @@ public class Season {
 
     private LocalDate finishDate;
 
+    private String seasonName;
+
     private Hotel hotel;
 
 
     // Constructor with parameters
-    public Season(int id, LocalDate startDate, LocalDate finishDate,Hotel hotel) {
+    public Season(int id, LocalDate startDate, LocalDate finishDate,Hotel hotel,String seasonName) {
         this.id = id;
         this.startDate = startDate;
         this.finishDate = finishDate;
         this.hotel=hotel;
+        this.seasonName=seasonName;
 
     }
+
+
 
     public Season() {
     }
     // Method to create a ComboItem from hotel's  and name
     public ComboItem getComboItem() {
-        return new ComboItem(this.getId(),this.getHotel().getName()+" : "+this.getStartDate()+" ---- "+this.getFinishDate());
+        return new ComboItem(this.getId(),this.getHotel().getName()+" : "+this.getSeasonName());
     }
+
 
     // Getters and setters for all fields
     public int getId() {
@@ -75,5 +81,14 @@ public class Season {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+
+    public String getSeasonName() {
+        return seasonName;
+    }
+
+    public void setSeasonName(String seasonName) {
+        this.seasonName = seasonName;
     }
 }

@@ -40,10 +40,26 @@ public class SeasonManager {
             rowObject[i++] = obj.getHotel().getName();
             rowObject[i++] = obj.getStartDate().format(formatter);
             rowObject[i++] = obj.getFinishDate().format(formatter);
+            rowObject[i++] = obj.getSeasonName();
             seasonObjList.add(rowObject);
         }
         return seasonObjList;
     }
+
+    public ArrayList<Object[]> getForCombo(int id,ArrayList<Season> seasons) {
+        ArrayList<Object[]> seasonObjList = new ArrayList<>();
+        for (Season obj : seasons) {
+            if (id == obj.getHotelId()) {
+                int i = 0;
+                Object[] rowObject = new Object[1];
+                rowObject[i++] = obj.getSeasonName();
+                seasonObjList.add(rowObject);
+            }
+
+        }
+        return seasonObjList;
+    }
+
 
     // Method to retrieve a season by ID
     public  Season getById(int id) { return this.seasonDao.getById(id);}
@@ -64,6 +80,10 @@ public class SeasonManager {
             Helper.showMsg("notFound");
         }
         return this.seasonDao.update(season);
+    }
+
+    public ArrayList<Season> getAllByHotelId(int hotelId) {
+        return seasonDao.getAllByHotelId(hotelId);
     }
 
 

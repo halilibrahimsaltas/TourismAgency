@@ -14,15 +14,19 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.PropertyResourceBundle;
 
 public class RoomManager {
 
     private RoomDao roomDao;
 
+    private SeasonDao seasonDao;
+
 
     // Constructor initializing RoomDao
     public RoomManager() {
         this.roomDao = new RoomDao();
+        this.seasonDao= new SeasonDao();
     }
     // Method to save a room
     public boolean save(Room room) { return this.roomDao.save(room);}
@@ -38,7 +42,7 @@ public class RoomManager {
             Object[] rowObject = new Object[size];
             rowObject[i++] = obj.getId();
             rowObject[i++] = obj.getHotel().getName();
-            rowObject[i++] = obj.getSeason().getComboItem();
+            rowObject[i++] = obj.getSeason().getSeasonName();
             rowObject[i++] = obj.getPension().getType();
             rowObject[i++] = obj.getType();
             rowObject[i++] = obj.getBedNumber();
@@ -49,6 +53,8 @@ public class RoomManager {
             rowObject[i++] = obj.isChest() ? "Yes" : "No";
             rowObject[i++] = obj.isProjection() ? "Yes" : "No";
             rowObject[i++] = obj.getStock();
+            rowObject[i++] = obj.getAdultPrice();
+            rowObject[i++] = obj.getChildPrice();
             roomObjList.add(rowObject);
         }
         return roomObjList;
@@ -74,60 +80,55 @@ public class RoomManager {
     }
 
     // Method to search for rooms based on various criteria
-    public  ArrayList<Room> searchForReservation( String search,String season_start,String guestCount){
-        String query= "SELECT * FROM public.\"room\" as c LEFT JOIN public.\"hotel\" as m";
-
+    public ArrayList<Room> searchForReservation(String search, String season_start, String guestCount) {
+        String query = "SELECT * FROM public.\"room\" AS c LEFT JOIN public.\"hotel\" AS m";
 
         ArrayList<String> where = new ArrayList<>();
         ArrayList<String> joinWhere = new ArrayList<>();
-        ArrayList<String> seasonWhere = new ArrayList<>();
+        ArrayList<String> seasonOrWhere = new ArrayList<>();
 
 
         joinWhere.add("c.room_hotel_id = m.hotel_id");
-
-        if (season_start != null && !season_start.isEmpty()) {
-            try {
-                LocalDate seasonStartDate = LocalDate.parse(season_start, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                season_start = seasonStartDate.toString();
-                seasonWhere.add("'" + season_start + "' BETWEEN season_start AND season_finish");
-            } catch (DateTimeParseException e) {
-                // Handle parsing error
-                e.printStackTrace();
-            }
-        }
 
         if (search != null && !search.isEmpty()) {
             where.add("(m.hotel_city = '" + search + "' OR m.hotel_district = '" + search + "' OR m.hotel_name = '" + search + "')");
         }
 
         if (guestCount != null && !guestCount.isEmpty()) {
-            int guest=Integer.parseInt(guestCount);
+            int guest = Integer.parseInt(guestCount);
             where.add("c.room_stock >= " + guest);
         }
 
         String whereStr = String.join(" AND ", where);
-        String joinStr = String.join(" AND " , joinWhere);
+        String joinStr = String.join(" AND ", joinWhere);
 
-
-        if (!joinStr.isEmpty()){
+        if (!joinStr.isEmpty()) {
             query += " ON " + joinStr;
         }
 
-        if (!whereStr.isEmpty()){
-            query+= " WHERE " + whereStr;
+        if (!whereStr.isEmpty()) {
+            query += " WHERE " + whereStr;
+        }
+
+        ArrayList<Room> searchedRoomList = this.roomDao.selectByQuery(query);
+
+        if (season_start != null && !season_start.isEmpty()) {
+            try {
+            String seasonQuery = " Select * FROM public.\"season\" WHERE ('" + season_start + "' BETWEEN season_start AND season_start)";
+            ArrayList<Season> seasonsList =this.seasonDao.selectByQuery(seasonQuery);
+            ArrayList<Integer>  busyRoomId= new ArrayList<>();
+            for (Season season : seasonsList){
+                busyRoomId.add(season.getId());
+            }
+            searchedRoomList.removeIf(room -> !busyRoomId.contains(room.getSeasonId()));
+            } catch(DateTimeParseException e) {
+                // Handle parsing error
+                e.printStackTrace();
+            }
         }
 
 
-        if (!seasonWhere.isEmpty()) {
-            String seasonWhereStr = String.join(" AND ", seasonWhere);
-            String seasonQuery = "SELECT * FROM public.\"season\" WHERE " + seasonWhereStr;
-            query += " AND EXISTS (" + seasonQuery + ")";
-        }
-
-
-        return this.roomDao.selectByQuery(query);
-
+        return searchedRoomList;
     }
-
 
 }

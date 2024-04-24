@@ -248,38 +248,6 @@
           <text value="R.Service"/>
         </properties>
       </component>
-      <component id="ad256" class="javax.swing.JLabel" binding="lbl_adult_price">
-        <constraints>
-          <grid row="12" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Adult Price"/>
-        </properties>
-      </component>
-      <component id="b7e2" class="javax.swing.JTextField" binding="fld_adult_price">
-        <constraints>
-          <grid row="12" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="29df9" class="javax.swing.JLabel" binding="lbl_child_price">
-        <constraints>
-          <grid row="14" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Child Price"/>
-        </properties>
-      </component>
-      <component id="6ce08" class="javax.swing.JTextField" binding="fld_child_price">
-        <constraints>
-          <grid row="14" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
       <component id="e77fd" class="javax.swing.JTextField" binding="fld_hotel_pension_type">
         <constraints>
           <grid row="16" column="0" row-span="1" col-span="5" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
