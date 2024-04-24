@@ -3,6 +3,7 @@ package entity;
 import core.ComboItem;
 
 public class Pension {
+    // Fields
 
     private int id;
 
@@ -13,7 +14,7 @@ public class Pension {
     private Hotel hotel;
 
 
-
+    // Constructor with parameters
     public Pension(int id, Pension.type type,Hotel hotel) {
         this.id = id;
         this.type = type;
@@ -33,9 +34,7 @@ public class Pension {
         ExcludingAlcoholFullCredit
 
     }
-    public ComboItem getComboItem() {
-        return new ComboItem(this.getId(),this.getType());
-    }
+    // Getters and setters for all fields
 
     public int getId() {
         return id;

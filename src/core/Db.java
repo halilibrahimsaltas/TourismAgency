@@ -13,6 +13,7 @@ public class Db {
     private  static Db instance=null;
     private Connection connection= null;
 
+    // Private constructor to prevent instantiation from outside
     public Db() {
         try{
             Properties props = new Properties();
@@ -32,9 +33,11 @@ public class Db {
             throw new RuntimeException(e);
         }
     }
+    // Method to get the connection object
     public Connection getConnection(){
         return connection;
     }
+    // Static method to get the singleton instance
     public  static  Connection getInstance(){
         try{
             if(instance==null || instance.getConnection().isClosed()){

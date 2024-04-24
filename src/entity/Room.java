@@ -4,6 +4,8 @@ import core.ComboItem;
 
 public class Room {
 
+    //Fields
+
     private int id;
 
     private int hotelId;
@@ -35,7 +37,7 @@ public class Room {
     private Reservation reservation;
 
 
-
+    // Constructor with parameters
     public Room(int id, Room.type type, int bedNumber, int size, boolean tv, boolean minibar, boolean gameConsole, boolean chest, boolean projection, int stock, Hotel hotel,Season season,Pension pension,Reservation reservation) {
         this.id = id;
         this.type = type;
@@ -65,7 +67,7 @@ public class Room {
     }
 
 
-
+    // Getters and setters for all fields
     public int getId() {
         return id;
     }

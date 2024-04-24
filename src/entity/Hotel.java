@@ -3,6 +3,7 @@ package entity;
 import core.ComboItem;
 
 public class Hotel {
+    // Fields
     private int id;
     private String name;
 
@@ -52,6 +53,8 @@ public class Hotel {
         this.childPrice = childPrice;
     }
 
+    // Constructor with parameters
+
     public Hotel(int id, String name, String city, String district, String address, String mail, String phone, int star, String pension, boolean park, boolean wifi, boolean pool, boolean fitness, boolean concierge, boolean spa, boolean service, double adultPrice, double childPrice) {
         this.id = id;
         this.name = name;
@@ -73,13 +76,11 @@ public class Hotel {
         this.childPrice=childPrice;
     }
 
+    // Default constructor
     public Hotel() {
     }
 
-
-    public ComboItem getComboItem() {
-        return new ComboItem(this.getId(),this.getName());
-    }
+    // Getters and setters for all fields
 
     public int getId() {
         return id;

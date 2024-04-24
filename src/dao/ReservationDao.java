@@ -10,14 +10,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ReservationDao {
+    // Connection to the database
     private final Connection con;
 
     private final RoomDao roomDao= new RoomDao();
 
     public ReservationDao() {
         this.con= Db.getInstance();
-    }
+    }// Constructor
 
+    // Method to select hotels based on a custom query
     public ArrayList<Reservation> selectByQuery(String query){
         ArrayList<Reservation> reservations = new ArrayList<>();
         try {
@@ -32,7 +34,10 @@ public class ReservationDao {
 
         return reservations;
     }
+
+    // Method to create an  object from a ResultSet
     public Reservation match(ResultSet rs) throws SQLException {
+        // Set properties of the object based on the ResultSet
         Reservation reservation = new Reservation();
         reservation.setId(rs.getInt("reservation_id"));
         reservation.setRoomId(rs.getInt("reservation_room_id"));
@@ -49,6 +54,8 @@ public class ReservationDao {
         reservation.setRoom(this.roomDao.getById(rs.getInt("reservation_room_id")));
         return reservation;
     }
+
+    // Method to update a record
     public boolean update(Reservation reservation) {
         String query = " UPDATE  public.\"reservation\" SET " +
                 "reservation_room_id = ?, " +
@@ -84,6 +91,7 @@ public class ReservationDao {
 
         return true;
     }
+    // Method to save a new reservation record
     public boolean save(Room room,Reservation reservation) {
         String query = "INSERT INTO public.\"reservation\" " +
                 "(" +
@@ -119,9 +127,12 @@ public class ReservationDao {
         }
         return true;
     }
+
+    // Method to find all reservations
     public ArrayList<Reservation> findAll() {
         return this.selectByQuery("SELECT * FROM public.\"reservation\" ORDER BY reservation_id ASC");
     }
+    // Method to find a reservations by its ID
     public Reservation getById(int id) {
         Reservation obj = null;
         String query = "SELECT * FROM public.\"reservation\" WHERE reservation_id = ?";
@@ -137,6 +148,7 @@ public class ReservationDao {
         }
         return obj;
     }
+    // Method to delete a reservation record by its ID
     public boolean delete(int reservationId) {
         String query = "DELETE FROM public.\"reservation\" WHERE reservation_id = ?";
 

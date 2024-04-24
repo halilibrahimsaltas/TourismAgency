@@ -12,13 +12,17 @@ import entity.Hotel;
 import entity.Season;
 
 public class SeasonDao {
+
+    // Connection to the database
     private final Connection con;
 
     private final HotelDao hotelDao= new HotelDao();
-
+    // Constructor
     public SeasonDao() {
         this.con= Db.getInstance();
     }
+
+    // Method to select hotels based on a custom query
     public  ArrayList<Season> selectByQuery(String query){
         ArrayList<Season> seasonss = new ArrayList<>();
         try {
@@ -33,10 +37,14 @@ public class SeasonDao {
 
         return seasonss;
     }
+
+    // Method to find all seasons
     public ArrayList<Season> findAll() {
         return this.selectByQuery("SELECT * FROM public.\"season\" ORDER BY season_id ASC");
     }
+    // Method to create an  object from a ResultSet
     public Season match(ResultSet rs) throws SQLException {
+        // Set properties of the object based on the ResultSet
         Season season = new Season();
         season.setId(rs.getInt("season_id"));
         season.setHotelId(rs.getInt("season_hotel_id"));
@@ -45,6 +53,7 @@ public class SeasonDao {
         season.setHotel(this.hotelDao.getById(rs.getInt("season_hotel_id")));
         return season;
     }
+    // Method to save a new season record
     public boolean save(Season season) {
         String query = "INSERT INTO public.\"season\" " +
                 "(" +
@@ -64,6 +73,8 @@ public class SeasonDao {
         }
         return true;
     }
+
+    // Method to update a record
     public boolean update(Season season) {
         String query = " UPDATE  public.\"season\" SET " +
                 "season_hotel_id = ?, " +
@@ -83,7 +94,7 @@ public class SeasonDao {
 
         return true;
     }
-
+    // Method to find a season by its ID
     public Season getById(int id) {
         Season obj = null;
         String query = "SELECT * FROM public.\"season\" WHERE season_id = ?";
@@ -99,6 +110,8 @@ public class SeasonDao {
         }
         return obj;
     }
+
+    // Method to delete a season record by its ID
     public boolean delete(int seasonId) {
         String query = "DELETE FROM public.\"season\" WHERE season_id = ?";
 

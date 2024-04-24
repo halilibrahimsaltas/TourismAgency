@@ -7,11 +7,8 @@ import entity.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
@@ -61,6 +58,8 @@ public class EmployeeView extends Layout {
 
     private DefaultTableModel tmdl_reservation= new DefaultTableModel();
 
+    private DefaultTableModel tmdl_reservation_room =new DefaultTableModel();
+
 
     private Object[] col_hotel;
 
@@ -72,7 +71,7 @@ public class EmployeeView extends Layout {
 
     private Object[] col_reservation;
 
-    private Object[] getCol_reservation_room;
+    private Object[] col_reservation_room;
 
     private User user;
 
@@ -105,9 +104,6 @@ public class EmployeeView extends Layout {
     private RoomView roomView;
 
     private PensionView pensionView;
-
-
-
 
 
     public EmployeeView(User user) {
@@ -151,11 +147,15 @@ public class EmployeeView extends Layout {
 
 
     private void loadReservationRoomTable(ArrayList<Object[]> reservationRoomList) {
-        getCol_reservation_room = new Object[]{"Room ID", "Hotel ", "City ", "Season", "Pension Type", "Adult Price", "Child Price", "Stock"};
+        col_reservation_room = new Object[]{"Room ID", "Hotel ", "City ", "Season ", "Pension Type", "Adult Price", "Child Price", "Stock"};
         if (reservationRoomList == null){
-            reservationRoomList = this.reservationManager.getForRoomTable(this.getCol_reservation_room.length, this.reservationManager.findAll());
+            reservationRoomList = this.reservationManager.getForRoomTableS(this.col_reservation_room.length, this.roomManager.findAll());
         }
-        this.createTable(this.tmdl_room, this.tbl_reservation_room, getCol_reservation_room, reservationRoomList);
+        this.createTable(this.tmdl_reservation_room, this.tbl_reservation_room, col_reservation_room, reservationRoomList);
+
+        tbl_reservation_room.getColumnModel().getColumn(3).setPreferredWidth(400);
+        tbl_reservation_room.getColumnModel().getColumn(1).setPreferredWidth(300);
+
     }
 
 
@@ -185,6 +185,11 @@ public class EmployeeView extends Layout {
             roomList = this.roomManager.getForTable(this.col_room.length, this.roomManager.findAll());
         }
         this.createTable(this.tmdl_room, this.tbl_room, col_room, roomList);
+
+        tbl_room.getColumnModel().getColumn(0).setPreferredWidth(30);
+        tbl_room.getColumnModel().getColumn(1).setPreferredWidth(250);
+        tbl_room.getColumnModel().getColumn(3).setPreferredWidth(150);
+        tbl_room.getColumnModel().getColumn(2).setPreferredWidth(400);
     }
 
     private void loadSeasonTable(ArrayList<Object[]> seasonList) {
@@ -262,6 +267,7 @@ public class EmployeeView extends Layout {
             reservationView.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {
+                    loadReservationRoomTable(null);
                     loadReservationTable(null);
                     loadRoomTable(null);
 
@@ -272,8 +278,12 @@ public class EmployeeView extends Layout {
         this.reservation_menu.add("Delete").addActionListener(e -> {
             if (Helper.confirm("sure")) {
                 int selectReservationId = this.getTableSelectedRow(tbl_reservation, 0);
-                this.reservationManager.getById(selectReservationId).getRoom().setStock((this.reservationManager.getById(selectReservationId).getRoom().getStock()+this.reservationManager.getById(selectReservationId).getTotalGuest()));
-                this.roomManager.update(this.reservationManager.getById(selectReservationId).getRoom());
+                Reservation reservation = this.reservationManager.getById(selectReservationId);
+                Room room = reservation.getRoom();
+
+                // Increase the room stock
+                room.setStock(room.getStock() + reservation.getTotalGuest());
+                this.roomManager.update(room);
                 if (this.reservationManager.delete(selectReservationId)) {
                     Helper.showMsg("done");
                     loadReservationTable(null);
@@ -302,20 +312,19 @@ public class EmployeeView extends Layout {
                 public void windowClosed(WindowEvent e) {
                     loadReservationRoomTable(null);
                     loadReservationTable(null);
-                    loadRoomTable(null);
 
                 }
             });
         });
 
         btn_search.addActionListener(e -> {
-            try{ArrayList<Room> roomList = this.roomManager.searchForReservation(
+            try{ArrayList<Room> reservationRoomList = this.roomManager.searchForReservation(
                     fld_namecity_search.getText(),
                     fld_checkin.getText(),
-                    Integer.parseInt(fld_guestinfo.getText())
+                    fld_guestinfo.getText()
 
             );
-                ArrayList<Object[]> roomReservationRow= this.roomManager.getForTable(this.col_room.length,roomList);
+                ArrayList<Object[]> roomReservationRow= this.reservationManager.getForRoomTableS(this.col_reservation_room.length,reservationRoomList);
                 loadReservationRoomTable(roomReservationRow);
 
             }catch (NumberFormatException ex) {

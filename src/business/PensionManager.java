@@ -11,15 +11,21 @@ public class PensionManager {
 
     private PensionDao pensionDao;
 
+    // Constructor initializing PensionDao
     public PensionManager() {
         this.pensionDao = new PensionDao();
     }
+
+    // Method to save a pension
     public  boolean save(Pension pension){
         return this.pensionDao.save(pension);
     }
 
+    // Method to retrieve all pensions
+
     public ArrayList<Pension> findAll() { return this.pensionDao.findAll();}
 
+    // Method to convert a list of pensions into a list suitable for display in a table
     public ArrayList<Object[]> getForTable(int size,ArrayList<Pension> pensions) {
         ArrayList<Object[]> pensionObjList = new ArrayList<>();
         for (Pension obj: pensions) {
@@ -32,24 +38,11 @@ public class PensionManager {
         }
         return pensionObjList;
     }
+    // Method to retrieve a pension by ID
 
-    public  ArrayList<Pension> searchForTable(int pensionId ){
-        String select = "SELECT * FROM public.\"pension\" ";
-        ArrayList<String> whereList = new ArrayList<>();
-
-        if (pensionId!= 0) {
-            whereList.add("pension_id= "+ pensionId);
-        }
-
-        String whereStr = String.join(" AND ", whereList);
-        String query = select;
-        if (!whereStr.isEmpty()){
-            query+= " WHERE "+ whereStr;
-        }
-
-        return  this.pensionDao.selectByQuery(query);
-    }
     public Pension getById(int id) { return this.pensionDao.getById(id);}
+
+    // Method to delete a pension by ID
 
     public  boolean delete(int id){
         if(this.getById(id)== null){
@@ -59,6 +52,7 @@ public class PensionManager {
 
         return  this.pensionDao.delete(id);
     }
+    // Method to update a pension
 
     public  boolean update(Pension pension){
         if (this.getById(pension.getId())== null){

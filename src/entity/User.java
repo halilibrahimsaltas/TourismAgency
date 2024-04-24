@@ -3,6 +3,7 @@ package entity;
 import core.ComboItem;
 
 public class User {
+    // Fields
     private int id;
     private  String username;
     private  String password;
@@ -13,7 +14,7 @@ public class User {
         employee
     }
 
-
+    // Default constructor
     public User(){
 
     }
@@ -22,7 +23,7 @@ public class User {
         this.username=username;
 
     }
-
+    // Constructor with parameters
     public User(int id, String username, String password, Role role) {
         this.id = id;
         this.username = username;
@@ -34,6 +35,7 @@ public class User {
         return new ComboItem(this.getId(),""+ this.getRole());
     }
 
+    // Getters and setters for all fields
     public int getId() {
         return id;
     }

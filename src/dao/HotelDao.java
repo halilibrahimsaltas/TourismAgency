@@ -12,12 +12,14 @@ import java.util.ArrayList;
 
 public class HotelDao {
 
+    // Connection to the database
     private final Connection con;
 
-    public HotelDao() {
+    public HotelDao() {// Constructor
 
         this.con= Db.getInstance();
     }
+    // Method to select hotels based on a custom query
     public  ArrayList<Hotel> selectByQuery(String query){
         ArrayList<Hotel> hotels = new ArrayList<>();
         try {
@@ -32,7 +34,9 @@ public class HotelDao {
 
         return hotels;
     }
+    // Method to create an  object from a ResultSet
     public Hotel match(ResultSet rs) throws SQLException {
+        // Set properties of the hotel object based on the ResultSet
         Hotel hotel = new Hotel();
         hotel.setId(rs.getInt("hotel_id"));
         hotel.setName(rs.getString("hotel_name"));
@@ -54,6 +58,8 @@ public class HotelDao {
         hotel.setChildPrice(rs.getDouble("child_price"));
         return hotel;
     }
+
+    // Method to update a hotel record
     public boolean update(Hotel hotel) {
         String query = " UPDATE  public.\"hotel\" SET " +
                 "hotel_name = ?, " +
@@ -92,7 +98,7 @@ public class HotelDao {
             pr.setBoolean(14, hotel.isSpa());
             pr.setBoolean(15, hotel.isService());
             pr.setDouble(16,hotel.getAdultPrice());
-            pr.setDouble(17,hotel.getAdultPrice());
+            pr.setDouble(17,hotel.getChildPrice());
             pr.setInt(18,hotel.getId());
             return pr.executeUpdate() != -1;
         } catch (SQLException throwable) {
@@ -102,9 +108,12 @@ public class HotelDao {
         return true;
     }
 
+    // Method to find all hotels
+
     public ArrayList<Hotel> findAll() {
         return this.selectByQuery("SELECT * FROM public.\"hotel\" ORDER BY hotel_id ASC");
     }
+    // Method to find a hotel by its ID
     public Hotel getById(int id) {
         Hotel obj = null;
         String query = "SELECT * FROM public.\"hotel\" WHERE hotel_id = ?";
@@ -120,6 +129,8 @@ public class HotelDao {
         }
         return obj;
     }
+
+    // Method to save a new hotel record
     public boolean save(Hotel hotel) {
         String query = "INSERT INTO public.\"hotel\" " +
                 "(" +
@@ -168,7 +179,7 @@ public class HotelDao {
         return true;
     }
 
-
+    // Method to delete a delete record by its ID
     public boolean delete(int hotelId) {
         String query = "DELETE FROM public.\"hotel\" WHERE hotel_id = ?";
 

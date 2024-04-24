@@ -35,10 +35,12 @@ public class SeasonView  extends Layout{
         this.add(container);
         this.guiInitilaze(400,400);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
         if(this.season.getId() != 0){
             this.fld_hotel_id.setText(Integer.toString(this.season.getHotelId()));
-            this.fld_start_date.setText(this.season.getStartDate().toString());
-            this.fld_finish_date.setText(this.season.getFinishDate().toString());
+            this.fld_start_date.setText(this.season.getStartDate().format(formatter));
+            this.fld_finish_date.setText(this.season.getFinishDate().format(formatter));
 
         }
 
@@ -49,7 +51,6 @@ public class SeasonView  extends Layout{
                 Helper.showMsg("fill");
             }else{
                 boolean result=false;
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 this.season.setHotelId(Integer.parseInt(fld_hotel_id.getText()));
                 this.season.setStartDate(LocalDate.parse(fld_start_date.getText(), formatter));
                 this.season.setFinishDate(LocalDate.parse(fld_finish_date.getText(), formatter));

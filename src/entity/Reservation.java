@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 public class Reservation {
 
+    //Fields
+
     private  int id;
 
     private int roomId;
@@ -29,7 +31,7 @@ public class Reservation {
     private  int totalGuest;
 
     private Room room;
-
+    // Constructor with parameters
     public Reservation(int id, String customerName, String customerCN, String customerAdress, String customerMail, String customerMpno, String note,LocalDate checkIn,LocalDate checkOut,double totalPrice,int totalGuest, Room room) {
         this.id = id;
         this.customerName = customerName;
@@ -47,7 +49,7 @@ public class Reservation {
 
     public Reservation() {
     }
-
+    // Getters and setters for all fields
     public int getId() {
         return id;
     }

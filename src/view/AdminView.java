@@ -36,9 +36,13 @@ public class AdminView extends Layout {
     public AdminView(User user) {
 
 
+        // Add container to the frame
         this.add(container);
+        // Initialize GUI
         this.guiInitilaze(1000, 500);
+        // Set the user
         this.user = user;
+        // Create UserManager instance
         this.userManager = new UserManager();
 
         if (this.user == null) {
@@ -46,10 +50,11 @@ public class AdminView extends Layout {
 
         }
 
+        // Set welcome label text
         this.lbl_welcome.setText("Welcome  " + this.user.getUsername() + " ! ");
 
 
-
+        // Check user role
         switch (this.user.getRole()){
             case admin -> {
                 this.admin_menu = new JPopupMenu();
@@ -65,6 +70,5 @@ public class AdminView extends Layout {
         }
 
     }
-
 
 }

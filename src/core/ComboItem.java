@@ -6,6 +6,8 @@ import java.security.cert.PolicyNode;
 import java.time.LocalDate;
 
 public class ComboItem {
+
+    // Fields to hold key and value
     private  int key;
     private String value;
 
@@ -13,6 +15,7 @@ public class ComboItem {
 
     private ComboItem date;
 
+    // Constructor for key-value pairs
     public ComboItem(int key, String value) {
         this.key = key;
         this.value = value;
@@ -29,8 +32,7 @@ public class ComboItem {
 
     }
 
-
-
+    //Getter Setter
     public int getKey() {
         return key;
     }

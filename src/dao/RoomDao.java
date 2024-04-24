@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class RoomDao {
+
+    // Connection to the database
     private final Connection con;
 
     private final HotelDao hotelDao = new HotelDao();
@@ -21,7 +23,9 @@ public class RoomDao {
 
     public RoomDao() {
         this.con= Db.getInstance();
-    }
+    }// Constructor
+
+    // Method to select hotels based on a custom query
     public ArrayList<Room> selectByQuery(String query){
         ArrayList<Room> rooms = new ArrayList<>();
         try {
@@ -36,7 +40,10 @@ public class RoomDao {
 
         return rooms;
     }
+
+    // Method to create an  object from a ResultSet
     public Room match(ResultSet rs) throws SQLException {
+        // Set properties of the object based on the ResultSet
         Room room= new Room();
         room.setId(rs.getInt("room_id"));
         room.setHotelId(rs.getInt("room_hotel_id"));
@@ -56,6 +63,8 @@ public class RoomDao {
         room.setPension(this.pensionDao.getById(rs.getInt("room_pension_id")));
         return room;
     }
+
+    // Method to update a record
     public boolean update(Room room) {
         String query = " UPDATE  public.\"room\" SET " +
                 "room_hotel_id = ?, " +
@@ -93,6 +102,7 @@ public class RoomDao {
 
         return true;
     }
+    // Method to save a new room record
     public boolean save(Room room) {
         String query = "INSERT INTO public.\"room\" " +
                 "(" +
@@ -130,9 +140,11 @@ public class RoomDao {
         }
         return true;
     }
+    // Method to find all rooms
     public ArrayList<Room> findAll() {
         return this.selectByQuery("SELECT * FROM public.\"room\" ORDER BY room_id ASC");
     }
+    // Method to find a room by its ID
     public Room getById(int id) {
         Room obj = null;
         String query = "SELECT * FROM public.\"room\" WHERE room_id = ?";
@@ -148,6 +160,7 @@ public class RoomDao {
         }
         return obj;
     }
+    // Method to delete a room record by its ID
     public boolean delete(int roomId) {
         String query = "DELETE FROM public.\"room\" WHERE room_id = ?";
 

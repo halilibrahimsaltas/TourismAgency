@@ -11,13 +11,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class PensionDao extends Layout {
+    // Connection to the database
     private final Connection con;
 
     private final HotelDao hotelDao= new HotelDao();
 
     public PensionDao() {
         this.con= Db.getInstance();
-    }
+    }// Constructor
+
+    // Method to select hotels based on a custom query
     public ArrayList<Pension> selectByQuery(String query){
         ArrayList<Pension> pensions = new ArrayList<>();
         try {
@@ -32,10 +35,14 @@ public class PensionDao extends Layout {
 
         return pensions;
     }
+    // Method to find all pensions
     public ArrayList<Pension> findAll() {
         return this.selectByQuery("SELECT * FROM public.\"pension_type\" ORDER BY pension_id ASC");
     }
+
+    // Method to create an  object from a ResultSet
     public Pension match(ResultSet rs) throws SQLException {
+        // Set properties of the object based on the ResultSet
         Pension pension = new Pension();
         pension.setId(rs.getInt("pension_id"));
         pension.setPensionHotelId(rs.getInt("pension_hotel_id"));
@@ -43,6 +50,7 @@ public class PensionDao extends Layout {
         pension.setHotel(this.hotelDao.getById(rs.getInt("pension_hotel_id")));
         return pension;
     }
+    // Method to save a new pension record
     public boolean save(Pension pension) {
         String query = "INSERT INTO public.\"pension_type\" " +
                 "(" +
@@ -60,6 +68,7 @@ public class PensionDao extends Layout {
         }
         return true;
     }
+    // Method to update a record
     public boolean update(Pension pension) {
         String query = " UPDATE  public.\"pension_type\" SET " +
                 "pension_type= ? ," +
@@ -77,7 +86,7 @@ public class PensionDao extends Layout {
 
         return true;
     }
-
+    // Method to find a pension by its ID
     public Pension getById(int id) {
         Pension obj = null;
         String query = "SELECT * FROM public.\"pension_type\" WHERE pension_id = ?";
@@ -93,6 +102,7 @@ public class PensionDao extends Layout {
         }
         return obj;
     }
+    // Method to delete a pension record by its ID
     public boolean delete(int pensionId) {
         String query = "DELETE FROM public.\"pension_type\" WHERE pension_id = ?";
 

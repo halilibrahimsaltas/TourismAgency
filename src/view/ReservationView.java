@@ -7,6 +7,8 @@ import entity.Reservation;
 import entity.Room;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -86,40 +88,7 @@ public class ReservationView extends  Layout{
 
         this.add(container);
         this.guiInitilaze(900,700);
-        int childCounts=0;
-
-        if (!fld_child_guest.getText().isEmpty()) {
-            try {
-                childCounts = Integer.parseInt(fld_child_guest.getText());
-            } catch (NumberFormatException t) {
-                t.printStackTrace();
-            }
-        }
-        double totalPrices=((((Integer.parseInt(fld_total_guest.getText())-childCounts)*this.reservation.getRoom().getHotel().getAdultPrice())+(this.reservation.getRoom().getHotel().getChildPrice()*childCounts))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText()),LocalDate.parse(this.fld_finish_date.getText())));
-        this.lbl_total_price.setText("Total Price  " + totalPrices + " TL ");
-
-        if (this.room.getId() !=0){
-            this.fld_hotel_name.setText(this.room.getHotel().getName());
-            this.fld_hotel_city.setText(this.room.getHotel().getCity());
-            this.fld_star.setText(Integer.toString(this.room.getHotel().getStar()));
-            this.chk_otopark.setSelected(this.room.getHotel().isPark());
-            this.chk_spa.setSelected(this.room.getHotel().isSpa());
-            this.chk_concierge.setSelected(this.room.getHotel().isConcierge());
-            this.chk_fitness.setSelected(this.room.getHotel().isFitness());
-            this.chk_pool.setSelected(this.room.getHotel().isPool());
-            this.chk_service.setSelected(this.room.getHotel().isService());
-            this.chk_wifi.setSelected(this.room.getHotel().isWifi());
-            this.fld_room_type.setText(this.room.getType().toString());
-            this.fld_pension_type.setText(this.room.getPension().getType().toString());
-            this.fld_bed_capacity.setText(Integer.toString(this.room.getBedNumber()));
-            this.fld_room_size.setText(Integer.toString(this.room.getSize()));
-            this.chk_tv.setSelected(this.room.isTv());
-            this.chk_minibar.setSelected(this.room.isMinibar());
-            this.chk_game_console.setSelected(this.room.isGameConsole());
-            this.chk_chest.setSelected(this.room.isChest());
-            this.chk_projection.setSelected(this.room.isProjection());
-        }
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
 
         if(this.reservation.getId()!=0){
@@ -137,8 +106,8 @@ public class ReservationView extends  Layout{
             this.fld_pension_type.setText(this.reservation.getRoom().getPension().getType().toString());
             this.fld_bed_capacity.setText(Integer.toString(this.reservation.getRoom().getBedNumber()));
             this.fld_room_size.setText(Integer.toString(this.reservation.getRoom().getSize()));
-            this.fld_start_date.setText(this.reservation.getCheckIn().toString());
-            this.fld_finish_date.setText(this.reservation.getCheckOut().toString());
+            this.fld_start_date.setText(this.reservation.getCheckIn().format(formatter));
+            this.fld_finish_date.setText(this.reservation.getCheckOut().format(formatter));
             this.fld_price.setText(Double.toString(this.reservation.getTotalPrice()));
             this.chk_tv.setSelected(this.reservation.getRoom().isTv());
             this.chk_minibar.setSelected(this.reservation.getRoom().isMinibar());
@@ -166,15 +135,15 @@ public class ReservationView extends  Layout{
                         t.printStackTrace();
                     }
                 }
-                double totalPrice=((((Integer.parseInt(fld_total_guest.getText())-childCount)*this.reservation.getRoom().getHotel().getAdultPrice())+(this.reservation.getRoom().getHotel().getChildPrice()*childCount))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText()),LocalDate.parse(this.fld_finish_date.getText())));
+                double totalPrice=((((Integer.parseInt(fld_total_guest.getText())-childCount)*this.reservation.getRoom().getHotel().getAdultPrice())+(this.reservation.getRoom().getHotel().getChildPrice()*childCount))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy")),LocalDate.parse(this.fld_finish_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
                 boolean result=false;
                 this.reservation.setCustomerName(fld_customerName.getText());
                 this.reservation.setCustomerCN(fld_customer_citizenId.getText());
                 this.reservation.setCustomerMail(fld_mail.getText());
                 this.reservation.setCustomerMpno(fld_mpno.getText());
                 this.reservation.setTotalGuest(Integer.parseInt(fld_total_guest.getText()));
-                this.reservation.setCheckIn(LocalDate.parse(fld_start_date.getText()));
-                this.reservation.setCheckOut(LocalDate.parse(fld_finish_date.getText()));
+                this.reservation.setCheckIn(LocalDate.parse(fld_start_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                this.reservation.setCheckOut(LocalDate.parse(fld_finish_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                 this.reservation.setTotalPrice(totalPrice);
                 if (this.reservation.getId() !=0){
                     result= this.reservationManager.update(this.reservation);
@@ -189,6 +158,42 @@ public class ReservationView extends  Layout{
             }
 
         });
+        fld_total_guest.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateTotalPrice();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateTotalPrice();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateTotalPrice();
+            }
+        });
+
+        // Add DocumentListener to fld_child_guest
+        fld_child_guest.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateTotalPrice();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateTotalPrice();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateTotalPrice();
+            }
+        });
+
+
 
     }
     public ReservationView(Room room, Reservation reservation) {
@@ -234,15 +239,15 @@ public class ReservationView extends  Layout{
                         t.printStackTrace();
                     }
                 }
-                double totalPrice=((((Integer.parseInt(fld_total_guest.getText())-childCount)*this.room.getHotel().getAdultPrice())+(this.room.getHotel().getChildPrice()*childCount))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText()),LocalDate.parse(this.fld_finish_date.getText())));
+                double totalPrice=((((Integer.parseInt(fld_total_guest.getText())-childCount)*this.room.getHotel().getAdultPrice())+(this.room.getHotel().getChildPrice()*childCount))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy")),LocalDate.parse(this.fld_finish_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy"))));
                 boolean result=false;
                 this.reservation.setCustomerName(fld_customerName.getText());
                 this.reservation.setCustomerCN(fld_customer_citizenId.getText());
                 this.reservation.setCustomerMail(fld_mail.getText());
                 this.reservation.setCustomerMpno(fld_mpno.getText());
                 this.reservation.setTotalGuest(Integer.parseInt(fld_total_guest.getText()));
-                this.reservation.setCheckIn(LocalDate.parse(fld_start_date.getText()));
-                this.reservation.setCheckOut(LocalDate.parse(fld_finish_date.getText()));
+                this.reservation.setCheckIn(LocalDate.parse(fld_start_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                this.reservation.setCheckOut(LocalDate.parse(fld_finish_date.getText(),DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                 this.reservation.setTotalPrice(totalPrice);
                 this.room.setStock((this.room.getStock()-Integer.parseInt(fld_total_guest.getText())));
                 if (this.reservation.getId() !=0){
@@ -262,25 +267,81 @@ public class ReservationView extends  Layout{
             }
 
         });
-
-
-
-
-    }
-
-    private void loadPrice(int total, int child){
-        int childCounts=0;
-
-        if (!fld_child_guest.getText().isEmpty()) {
-            try {
-                childCounts = Integer.parseInt(fld_child_guest.getText());
-            } catch (NumberFormatException t) {
-                t.printStackTrace();
+        fld_total_guest.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateTotalPriceForRoom();
             }
-        }
-        double totalPrices=((((Integer.parseInt(fld_total_guest.getText())-childCounts)*this.reservation.getRoom().getHotel().getAdultPrice())+(this.reservation.getRoom().getHotel().getChildPrice()*childCounts))* ChronoUnit.DAYS.between(LocalDate.parse(this.fld_start_date.getText()),LocalDate.parse(this.fld_finish_date.getText())));
-        this.lbl_total_price.setText("Total Price  " + totalPrices + " TL ");
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateTotalPriceForRoom();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateTotalPriceForRoom();
+            }
+        });
+
+        // Add DocumentListener to fld_child_guest
+        fld_child_guest.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateTotalPriceForRoom();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateTotalPriceForRoom();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateTotalPriceForRoom();
+            }
+        });
+
+
 
     }
+
+    private void updateTotalPrice() {
+        try {
+        int totalGuest = fld_total_guest.getText().isEmpty() ? 0 : Integer.parseInt(fld_total_guest.getText());
+        int childGuest = fld_child_guest.getText().isEmpty() ? 0 : Integer.parseInt(fld_child_guest.getText());
+        LocalDate startDate = LocalDate.parse(this.fld_start_date.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalDate finishDate = LocalDate.parse(this.fld_finish_date.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+        double totalPrice = ((((totalGuest - childGuest) * this.reservation.getRoom().getHotel().getAdultPrice()) +
+                (this.reservation.getRoom().getHotel().getChildPrice() * childGuest)) *
+                ChronoUnit.DAYS.between(startDate, finishDate));
+
+        this.lbl_total_price.setText("Total Price: " + totalPrice + " TL");
+        } catch (NumberFormatException | java.time.format.DateTimeParseException ex) {
+            // Handle the case where parsing fails or date format is invalid
+            lbl_total_price.setText("Total Price: Invalid input");
+        }
+    }
+    private void updateTotalPriceForRoom() {
+        try {
+            int totalGuest = fld_total_guest.getText().isEmpty() ? 0 : Integer.parseInt(fld_total_guest.getText());
+            int childGuest = fld_child_guest.getText().isEmpty() ? 0 : Integer.parseInt(fld_child_guest.getText());
+            LocalDate startDate = LocalDate.parse(this.fld_start_date.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            LocalDate finishDate = LocalDate.parse(this.fld_finish_date.getText(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+            double totalPrice = ((((totalGuest - childGuest) * this.room.getHotel().getAdultPrice()) +
+                    (this.room.getHotel().getChildPrice() * childGuest)) *
+                    ChronoUnit.DAYS.between(startDate, finishDate));
+
+            this.lbl_total_price.setText("Total Price: " + totalPrice + " TL");
+        } catch (NumberFormatException | java.time.format.DateTimeParseException ex) {
+            // Handle the case where parsing fails or date format is invalid
+            lbl_total_price.setText("Total Price: Invalid input");
+        }
+    }
+
+
+
 
 }

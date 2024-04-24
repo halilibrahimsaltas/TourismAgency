@@ -7,6 +7,8 @@ import core.ComboItem;
 import java.time.LocalDate;
 
 public class Season {
+
+    // Fields
     private  int id;
 
     private  int hotelId;
@@ -18,7 +20,7 @@ public class Season {
     private Hotel hotel;
 
 
-
+    // Constructor with parameters
     public Season(int id, LocalDate startDate, LocalDate finishDate,Hotel hotel) {
         this.id = id;
         this.startDate = startDate;
@@ -29,10 +31,12 @@ public class Season {
 
     public Season() {
     }
+    // Method to create a ComboItem from hotel's  and name
     public ComboItem getComboItem() {
         return new ComboItem(this.getId(),this.getHotel().getName()+" : "+this.getStartDate()+" ---- "+this.getFinishDate());
     }
 
+    // Getters and setters for all fields
     public int getId() {
         return id;
     }

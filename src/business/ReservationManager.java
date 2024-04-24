@@ -2,6 +2,7 @@ package business;
 
 import core.Helper;
 import dao.ReservationDao;
+import dao.RoomDao;
 import entity.Reservation;
 import entity.Room;
 
@@ -11,17 +12,26 @@ public class ReservationManager {
 
     private ReservationDao reservationDao;
 
+    private RoomManager roomManager;
+
+    // Constructor initializing ReservationDao
     public ReservationManager() {
         this.reservationDao = new ReservationDao();
+        this.roomManager= new RoomManager();
+
+
     }
     //public boolean save(Reservation reservation) { return this.reservationDao.save(reservation);}
 
+    // Method to save a reservation along with its associated room
     public boolean save(Room room,Reservation reservation){
        return this.reservationDao.save(room,reservation);
     }
 
+    // Method to retrieve all reservations
     public ArrayList<Reservation> findAll() { return this.reservationDao.findAll();}
 
+    // Method to convert a list of reservations into a list suitable for display in a table
     public ArrayList<Object[]> getForTable(int size,ArrayList<Reservation> reservations) {
         ArrayList<Object[]> reservationObjList = new ArrayList<>();
         for (Reservation obj: reservations) {
@@ -43,6 +53,7 @@ public class ReservationManager {
         }
         return reservationObjList;
     }
+    // Method to convert a list of reservations into a list suitable for display in a room table
     public ArrayList<Object[]> getForRoomTable(int size,ArrayList<Reservation> reservations) {
         ArrayList<Object[]> reservationObjList = new ArrayList<>();
         for (Reservation obj: reservations) {
@@ -60,9 +71,29 @@ public class ReservationManager {
         }
         return reservationObjList;
     }
+    // Method to convert a list of reservations into a list suitable for display in a room table
+    public ArrayList<Object[]> getForRoomTableS(int size,ArrayList<Room> rooms) {
+        ArrayList<Object[]> reservationObjList = new ArrayList<>();
+        for (Room obj: rooms) {
+            int i = 0;
+            Object[] rowObject = new Object[size];
+            rowObject[i++] = obj.getId();
+            rowObject[i++] = obj.getHotel().getName();
+            rowObject[i++] = obj.getHotel().getCity();
+            rowObject[i++] = obj.getSeason().getComboItem();
+            rowObject[i++] = obj.getPension().getType().toString();
+            rowObject[i++] = obj.getHotel().getAdultPrice();
+            rowObject[i++] = obj.getHotel().getChildPrice();
+            rowObject[i++] = obj.getStock();
+            reservationObjList.add(rowObject);
+        }
+        return reservationObjList;
+    }
 
+    // Method to retrieve a reservation by its ID
     public  Reservation getById(int id) { return this.reservationDao.getById(id);}
 
+    // Method to delete a reservation by its ID
     public  boolean delete(int id){
         if(this.getById(id)== null){
             Helper.showMsg("notFound");
@@ -72,6 +103,7 @@ public class ReservationManager {
         return  this.reservationDao.delete(id);
     }
 
+    // Method to update a reservation
     public  boolean update(Reservation reservation){
         if (this.getById(reservation.getId())== null){
             Helper.showMsg("notFound");

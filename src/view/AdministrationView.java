@@ -54,6 +54,7 @@ public class AdministrationView extends  Layout{
 
 
     }
+    // Load user table
     public void loadUserTable(ArrayList<Object[]> userList) {
         col_user = new Object[]{"User ID", "User Name", "User Password", "User Role"};
         if (userList == null) {
@@ -62,6 +63,8 @@ public class AdministrationView extends  Layout{
         this.createTable(this.tmdl_user, this.tbl_employee, col_user, userList);
 
     }
+    // Load user components and set up actions
+
     public void loadUserComponent() {
         tableRowSelected(this.tbl_employee);
         this.employee_menu = new JPopupMenu();
@@ -104,6 +107,7 @@ public class AdministrationView extends  Layout{
             }
 
         });
+        // Action listener for role search button
         btn_role_search.addActionListener(e -> {
            User.Role selectedRole = (User.Role) this.cmb_role_search.getSelectedItem();
             int userId = 0;
@@ -117,6 +121,8 @@ public class AdministrationView extends  Layout{
             loadUserTable(userRow);
 
         });
+
+        // Action listener for default button
         btn_default.addActionListener(e -> {
             loadUserFilter();
 
@@ -128,6 +134,7 @@ public class AdministrationView extends  Layout{
 
     }
 
+    // Load user filter
     private void loadUserFilter() {
         this.cmb_role_search.setModel(new DefaultComboBoxModel<>(User.Role.values()));
         this.cmb_role_search.setSelectedItem(null);
